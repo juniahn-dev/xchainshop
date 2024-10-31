@@ -4,10 +4,9 @@
 import { ConnectKitProvider, createConfig } from "@particle-network/connectkit";
 import { authWalletConnectors } from "@particle-network/connectkit/auth";
 import { evmWalletConnectors } from "@particle-network/connectkit/evm";
-import { solanaWalletConnectors } from "@particle-network/connectkit/solana";
 import { EntryPosition, wallet } from "@particle-network/connectkit/wallet";
 
-import { mainnet, polygon } from "@particle-network/connectkit/chains"; // Chains are imported here
+import { sepolia } from "@particle-network/connectkit/chains";
 import React from "react";
 
 const config = createConfig({
@@ -21,19 +20,18 @@ const config = createConfig({
       { walletId: "coinbaseWallet", label: "popular" },
     ],
     language: "en-US",
-    mode: "auto", // dark or auto.
+    mode: "auto",
   },
 
   walletConnectors: [
     evmWalletConnectors({
-      // Replace this with your app metadata.
       metadata: {
-        name: "Connectkit Demo",
+        name: "XChainShop",
         icon:
           typeof window !== "undefined"
             ? `${window.location.origin}/favicon.ico`
             : "",
-        description: "Particle Connectkit Next.js Scaffold.",
+        description: "XChainShop",
         url: typeof window !== "undefined" ? window.location.origin : "",
       },
       walletConnectProjectId: process.env
@@ -41,24 +39,20 @@ const config = createConfig({
     }),
 
     authWalletConnectors({
-      authTypes: ["email", "google", "twitter", "github"], // Optional, restricts the types of social logins supported
+      authTypes: ["email", "google", "twitter", "github"],
     }),
-
-    solanaWalletConnectors(),
   ],
 
   plugins: [
     wallet({
       visible: true,
-      entryPosition: EntryPosition.BR, // Use BR (bottom right), BL (bottom left), TR (top right), TL (top left) to move the wallet entry position
+      entryPosition: EntryPosition.BR,
     }),
   ],
 
-  // List the chains you want to include
-  chains: [mainnet, polygon],
+  chains: [sepolia],
 });
 
-// Wrap your application with this exported component, or ConnectKitProvider directly.
 export const ParticleConnectkit = ({ children }: React.PropsWithChildren) => {
   return <ConnectKitProvider config={config}>{children}</ConnectKitProvider>;
 };

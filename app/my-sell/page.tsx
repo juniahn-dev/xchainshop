@@ -1,20 +1,20 @@
 "use client";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import useProducts from "@/hooks/useProducts";
-import React, { useEffect, useState } from "react";
 import {
   Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
-  CardDescription,
-  CardContent,
-  CardFooter,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import useProducts from "@/hooks/useProducts";
 import { IProductProps } from "@/types/product";
-import { useAccount } from "wagmi";
+import { useAccount } from "@particle-network/connectkit";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Home() {
   const router = useRouter();

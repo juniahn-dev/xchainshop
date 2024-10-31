@@ -1,12 +1,11 @@
 "use client";
+import { ConnectButton } from "@particle-network/connectkit";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
-import Link from "next/link";
-import { useState } from "react";
 
 export const Header: React.FC = () => {
   const router = useRouter();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <div>
@@ -14,7 +13,7 @@ export const Header: React.FC = () => {
         <Link href={"/"}>
           <h1 className="font-mono text-md font-extrabold">xchainshop</h1>
         </Link>
-        <w3m-button />
+        <ConnectButton />
       </div>
 
       <div className="z-10 w-full px-10 flex items-center justify-between font-mono text-sm">

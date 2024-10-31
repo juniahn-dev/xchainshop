@@ -1,14 +1,11 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
-import { headers } from "next/headers";
 import "./globals.css";
 
 import { Header } from "@/components/header";
-import { config } from "@/config";
 import Web3ModalProvider from "@/context";
 import { cn } from "@/lib/utils";
-import { cookieToInitialState } from "wagmi";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -25,7 +22,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const initialState = cookieToInitialState(config, headers().get("cookie"));
   return (
     <html lang="en">
       <body
@@ -34,7 +30,7 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <Web3ModalProvider initialState={initialState}>
+        <Web3ModalProvider>
           <Header />
           {children}
         </Web3ModalProvider>

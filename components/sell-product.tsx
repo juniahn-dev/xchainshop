@@ -1,4 +1,5 @@
 "use client";
+import pb from "@/api/pocketbase";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -11,13 +12,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useAccount } from "@particle-network/connectkit";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import React from "react";
-import pb from "@/api/pocketbase";
-import { useAccount } from "wagmi";
 const formSchema = z.object({
   name: z.string().default("").optional(),
   price: z.coerce.number().optional(),
