@@ -181,7 +181,7 @@ export default function Home() {
   // };
 
   // return (
-  //   <main className="flex min-h-screen flex-col items-center p-10 bg-green-500">
+  //   <main className="flex min-h-screen flex-col items-center p-10  ">
   //     {product && (
   //       <div className="z-10 w-full max-w-md font-mono text-white space-y-5">
   //         <Image src={product.image} width={500} height={500} alt={""} />

@@ -3,7 +3,9 @@ import type { Metadata } from "next";
 import { Inter as FontSans } from "next/font/google";
 import "./globals.css";
 
-import { Header } from "@/components/header";
+import { AppSidebar } from "@/components/app-sidebar";
+import { ThemeProvider } from "@/components/theme-provider";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import Web3ModalProvider from "@/context";
 import { cn } from "@/lib/utils";
 
@@ -31,8 +33,18 @@ export default function RootLayout({
         )}
       >
         <Web3ModalProvider>
-          <Header />
-          {children}
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SidebarProvider>
+              <AppSidebar />
+              <SidebarTrigger />
+              {children}
+            </SidebarProvider>
+          </ThemeProvider>
         </Web3ModalProvider>
       </body>
     </html>

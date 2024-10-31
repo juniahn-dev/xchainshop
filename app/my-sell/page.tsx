@@ -29,7 +29,7 @@ export default function Home() {
   }, [address, products]);
 
   return (
-    <main className="flex min-h-screen flex-col items-center py-10 bg-green-500">
+    <main className="flex min-h-screen flex-col py-10 ml-10 w-full">
       <div className="flex flex-wrap gap-10 w-3/5">
         {myProducts &&
           myProducts.map((product) => {
