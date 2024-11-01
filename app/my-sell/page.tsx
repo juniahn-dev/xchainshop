@@ -1,14 +1,8 @@
 "use client";
+import { SkeletonCards } from "@/components/skeleton-cards";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import useProducts from "@/hooks/useProducts";
 import { IProductProps } from "@/types/product";
 import { useAccount } from "@particle-network/connectkit";
@@ -30,43 +24,49 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col py-10 ml-10 w-full">
-      <div className="flex flex-wrap gap-10 w-3/5">
-        {myProducts &&
+      <div className="flex flex-wrap gap-10">
+        {myProducts ? (
           myProducts.map((product) => {
             return (
-              <Card key={product.id} className="w-[350px] font-mono">
-                <CardHeader>
-                  <CardTitle>{product.name}</CardTitle>
-                  <CardDescription>{product.description}</CardDescription>
-                  <CardDescription>{product.location}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <form>
-                    <div className="grid w-full items-center gap-4">
-                      <div className="flex flex-col space-y-1.5">
-                        <Image
-                          src={product.image}
-                          width={300}
-                          height={300}
-                          alt={""}
-                        />
-                      </div>
-                    </div>
-                  </form>
+              <Card
+                key={product.id}
+                className="max-w-md overflow-hidden w-[350px] font-mono"
+              >
+                <CardContent className="p-0">
+                  <div className="relative w-full aspect-[4/3]">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      fill
+                      style={{ objectFit: "cover" }}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  </div>
                 </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Badge className="text-lg" variant="outline">
-                    {product.state}
-                  </Badge>
-                  <Button
-                    onClick={() => router.push(`/products/${product.id}`)}
-                  >
-                    View
-                  </Button>
+                <CardFooter className="flex flex-col p-4">
+                  <div className="w-full mb-4">
+                    <h2 className="text-xl font-bold">{product.name}</h2>
+                    <p className="text-sm text-gray-600">
+                      {product.description}
+                    </p>
+                  </div>
+                  <div className="flex w-full space-x-2">
+                    <Badge className="text-lg" variant="outline">
+                      {product.state}
+                    </Badge>
+                    <Button
+                      onClick={() => router.push(`/products/${product.id}`)}
+                    >
+                      View
+                    </Button>
+                  </div>
                 </CardFooter>
               </Card>
             );
-          })}
+          })
+        ) : (
+          <SkeletonCards />
+        )}
       </div>
     </main>
   );
