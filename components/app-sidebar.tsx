@@ -40,7 +40,7 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar variant="floating" collapsible="icon">
+    <Sidebar variant="floating">
       <SidebarHeader>
         <SidebarGroupLabel className="justify-between">
           XChainShop
