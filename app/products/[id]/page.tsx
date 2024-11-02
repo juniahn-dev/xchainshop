@@ -9,25 +9,14 @@ import { Wrapper } from "@/components/wrapper";
 import useProduct from "@/hooks/useProduct";
 import { useAccount, useWallets } from "@particle-network/connectkit";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useCallback } from "react";
 import { toast } from "sonner";
-import { parseEther, type Address } from "viem";
+import { encodeFunctionData, type Address } from "viem";
 
-// import pb from "@/api/pocketbase";
-// import { balanceState } from "@/atom/balance";
-// import { Badge } from "@/components/ui/badge";
-// import { Button } from "@/components/ui/button";
-// import useProduct from "@/hooks/useProduct";
-// import Image from "next/image";
-// import { useParams } from "next/navigation";
-// import { useCallback, useEffect, useState } from "react";
-// import { useRecoilValue } from "recoil";
 // import crypto from "crypto";
-// import { IProvider } from "@web3auth/base";
-// import { isoTimeToRippleTime, xrpToDrops } from "xrpl";
 // import { PreimageSha256 } from "five-bells-condition";
-// import { accountState } from "@/atom/account";
 // import { web3auth } from "@/utils/web3-auth";
 
 export default function Home() {
@@ -49,21 +38,39 @@ export default function Home() {
     }
 
     try {
+      const usdcAbi = [
+        {
+          inputs: [
+            { name: "to", type: "address" },
+            { name: "amount", type: "uint256" },
+          ],
+          name: "transfer",
+          outputs: [{ name: "", type: "bool" }],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+      ];
+
+      const data = encodeFunctionData({
+        abi: usdcAbi,
+        functionName: "transfer",
+        args: [product.owner, Number(product.price) * 1000000],
+      });
+
       const tx = {
-        to: product.owner as Address,
-        value: parseEther(product.price),
-        chain: chain,
+        to: "0x1c7d4b196cb0c7b01d743fbc6116a902379c7238" as Address,
+        data,
+        chain,
         account: account as Address,
       };
       const walletClient = primaryWallet.getWalletClient();
       const transactionResponse = await walletClient.sendTransaction(tx);
-      console.log(transactionResponse);
 
       await pb.collection("xchainshop").update(product.id, {
         state: "Reserved",
         buyer: account,
+        tx: transactionResponse,
       });
-      alert("Reserved Success");
       window.location.reload();
     } catch (e: any) {
       toast("Tx Error", {
@@ -208,12 +215,23 @@ export default function Home() {
               </div>
             )}
 
+            {product?.buyer === account && (
+              <div className="flex items-center">
+                {account} is bought
+                <Button className="ml-3">
+                  <Link href={`https://sepolia.etherscan.io/tx/${product.tx}`}>
+                    Go to Tx
+                  </Link>
+                </Button>
+              </div>
+            )}
+
             {product?.state === "Sell" && product?.owner === account && (
               <div className="flex space-x-4">
                 <Button onClick={onSendTransaction}>Delete</Button>
               </div>
             )}
-            {product?.state === "Reserved" && product?.buyer === account && (
+            {product?.state === "Reserved" && product?.owner === account && (
               <div className="flex space-x-4">
                 <Button onClick={onApprove}>Approve</Button>
               </div>
