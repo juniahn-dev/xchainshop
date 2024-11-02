@@ -11,6 +11,7 @@ import { useAccount, useWallets } from "@particle-network/connectkit";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { useCallback } from "react";
+import { toast } from "sonner";
 import { parseEther, type Address } from "viem";
 
 // import pb from "@/api/pocketbase";
@@ -47,22 +48,28 @@ export default function Home() {
       return;
     }
 
-    const tx = {
-      to: product.owner as Address,
-      value: parseEther(product.price),
-      chain: chain,
-      account: account as Address,
-    };
-    const walletClient = primaryWallet.getWalletClient();
-    const transactionResponse = await walletClient.sendTransaction(tx);
-    console.log(transactionResponse);
+    try {
+      const tx = {
+        to: product.owner as Address,
+        value: parseEther(product.price),
+        chain: chain,
+        account: account as Address,
+      };
+      const walletClient = primaryWallet.getWalletClient();
+      const transactionResponse = await walletClient.sendTransaction(tx);
+      console.log(transactionResponse);
 
-    await pb.collection("xchainshop").update(product.id, {
-      state: "Reserved",
-      buyer: account,
-    });
-    alert("Reserved Success");
-    window.location.reload();
+      await pb.collection("xchainshop").update(product.id, {
+        state: "Reserved",
+        buyer: account,
+      });
+      alert("Reserved Success");
+      window.location.reload();
+    } catch (e: any) {
+      toast("Tx Error", {
+        description: e.message,
+      });
+    }
   }, [account, chain, primaryWallet, product]);
 
   const onApprove = async () => {

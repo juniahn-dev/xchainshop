@@ -4,6 +4,7 @@ import { useBalance } from "@/app/atom/balance";
 import { useAccount, usePublicClient } from "@particle-network/connectkit";
 import { useEffect } from "react";
 import { erc20Abi } from "viem";
+import { Toaster } from "./ui/sonner";
 
 export function Wrapper({
   children,
@@ -35,6 +36,7 @@ export function Wrapper({
   return (
     <main className="flex min-h-screen flex-col py-10 ml-10 w-full">
       {children}
+      <Toaster position="top-right" />
     </main>
   );
 }
