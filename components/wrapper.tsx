@@ -1,3 +1,5 @@
+"use client";
+
 import { useBalance } from "@/app/atom/balance";
 import { useAccount, usePublicClient } from "@particle-network/connectkit";
 import { useEffect } from "react";
