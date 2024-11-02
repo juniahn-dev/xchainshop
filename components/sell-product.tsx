@@ -147,7 +147,7 @@ export const SellProduct: React.FC = () => {
               name="price"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Price(USDT)</FormLabel>
+                  <FormLabel>Price(USDC)</FormLabel>
                   <FormControl>
                     <Input disabled={loading} placeholder="Price" {...field} />
                   </FormControl>

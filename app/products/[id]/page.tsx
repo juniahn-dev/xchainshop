@@ -1,4 +1,18 @@
 "use client";
+
+import pb from "@/api/pocketbase";
+import { useBalance } from "@/app/atom/balance";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Wrapper } from "@/components/wrapper";
+import useProduct from "@/hooks/useProduct";
+import { useAccount, useWallets } from "@particle-network/connectkit";
+import Image from "next/image";
+import { useParams } from "next/navigation";
+import { useCallback } from "react";
+import { parseEther, type Address } from "viem";
+
 // import pb from "@/api/pocketbase";
 // import { balanceState } from "@/atom/balance";
 // import { Badge } from "@/components/ui/badge";
@@ -16,64 +30,50 @@
 // import { web3auth } from "@/utils/web3-auth";
 
 export default function Home() {
-  // const params = useParams();
-  // const { id } = params as { id: string };
-  // const balance = useRecoilValue(balanceState);
-  // const account = useRecoilValue(accountState);
-  // const { data: product } = useProduct(id);
-  // const [provider, setProvider] = useState<IProvider | null>(null);
+  const [primaryWallet] = useWallets();
 
-  // useEffect(() => {
-  //   const init = async () => {
-  //     try {
-  //       await web3auth.initModal();
-  //       setProvider(web3auth.provider);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
+  const params = useParams();
+  const { id } = params as { id: string };
+  const { balance } = useBalance();
+  const { address: account, chain } = useAccount();
+  const { data: product } = useProduct(id);
 
-  //   init();
-  // }, [product]);
+  const onSendTransaction = useCallback(async () => {
+    if (!product) {
+      return;
+    }
+    if (!account) {
+      alert("account loading..");
+      return;
+    }
 
-  // const onSendTransaction = useCallback(async () => {
-  //   if (!product) {
-  //     return;
-  //   }
-  //   if (!account){
-  //     alert('account loading..')
-  //     return;
-  //   }
-  //   const tx = {
-  //     TransactionType: "Payment",
-  //     Account: account,
-  //     Amount: xrpToDrops(product.price),
-  //     Destination: product.owner,
-  //   };
-  //   const txSign = await provider?.request({
-  //     method: "xrpl_submitTransaction",
-  //     params: {
-  //       transaction: tx,
-  //     },
-  //   });
-  //   console.log(txSign);
-  //   await pb.collection("xchainshop").update(product.id, {
-  //     state: "Completed",
-  //     buyer: account,
-  //   });
-  //   alert("Buy Success");
-  //   window.location.reload();
-  // }, [product]);
+    const tx = {
+      to: product.owner as Address,
+      value: parseEther(product.price),
+      chain: chain,
+      account: account as Address,
+    };
+    const walletClient = primaryWallet.getWalletClient();
+    const transactionResponse = await walletClient.sendTransaction(tx);
+    console.log(transactionResponse);
 
-  // const onApprove = async() => {
-  //   if (!product) {
-  //     return;
-  //   }
-  //   await pb.collection("xchainshop").update(product.id, {
-  //      state: "Approve",
-  //   });
-  //   window.location.reload();
-  // }
+    await pb.collection("xchainshop").update(product.id, {
+      state: "Reserved",
+      buyer: account,
+    });
+    alert("Reserved Success");
+    window.location.reload();
+  }, [account, chain, primaryWallet, product]);
+
+  const onApprove = async () => {
+    if (!product) {
+      return;
+    }
+    await pb.collection("xchainshop").update(product.id, {
+      state: "Approve",
+    });
+    window.location.reload();
+  };
   // const onReceive =async() => {
   //   if (!account){
   //     alert('account loading..')
@@ -180,47 +180,53 @@ export default function Home() {
   //   }
   // };
 
-  // return (
-  //   <main className="flex min-h-screen flex-col items-center p-10  ">
-  //     {product && (
-  //       <div className="z-10 w-full max-w-md font-mono text-white space-y-5">
-  //         <Image src={product.image} width={500} height={500} alt={""} />
-  //         <Badge variant="secondary" className="text-2xl">
-  //           {product.state}
-  //         </Badge>
-  //         <h1 className="text-2xl font-extrabold">{product.name}</h1>
-  //         <h1>{product.description}</h1>
+  return (
+    <Wrapper>
+      {product ? (
+        <div className="z-10 w-full font-mono text-white space-y-5">
+          <Image src={product.image} width={500} height={500} alt={""} />
+          <Badge variant="secondary" className="text-2xl">
+            {product.state}
+          </Badge>
+          <h1 className="text-2xl font-extrabold">{product.name}</h1>
+          <h1>{product.description}</h1>
 
-  //         <div className="space-y-5">
-  //           <h1>Price : {product.price} XRP</h1>
-  //           <h1>Available : {balance} XRP</h1>
+          <div className="space-y-5">
+            <h1>Price : {product.price} USDC</h1>
+            <h1>Available : {balance} USDC</h1>
 
-  //           {product?.state == "Sell" && product?.owner !== account && (
-  //             <div className="flex space-x-4">
-  //               <Button onClick={onSendTransaction}>Buy</Button>
-  //               <Button onClick={onEscrowSendTransaction}>Escrow Buy</Button>
-  //             </div>
-  //           )}
+            {product?.state == "Sell" && product?.owner !== account && (
+              <div className="flex space-x-4">
+                <Button onClick={onSendTransaction}>Buy</Button>
+              </div>
+            )}
 
-  //           {product?.state === "Sell" && product?.owner === account && (
-  //             <div className="flex space-x-4">
-  //               <Button onClick={onSendTransaction}>Delete</Button>
-  //             </div>
-  //           )}
-  //           {product?.state === "Reserved" && product?.buyer === account && (
-  //             <div className="flex space-x-4">
-  //               <Button onClick={onApprove}>Approve</Button>
-  //             </div>
-  //           )}
-  //           {product?.state === "Approve" && product?.owner === account && (
-  //               <div className="flex space-x-4">
-  //                 <Button onClick={onReceive}>Receive</Button>
-  //               </div>
-  //           )}
-  //         </div>
-  //       </div>
-  //     )}
-  //   </main>
-  // );
-  return <div>good</div>;
+            {product?.state === "Sell" && product?.owner === account && (
+              <div className="flex space-x-4">
+                <Button onClick={onSendTransaction}>Delete</Button>
+              </div>
+            )}
+            {product?.state === "Reserved" && product?.buyer === account && (
+              <div className="flex space-x-4">
+                <Button onClick={onApprove}>Approve</Button>
+              </div>
+            )}
+            {/* {product?.state === "Approve" && product?.owner === account && (
+                <div className="flex space-x-4">
+                  <Button onClick={onReceive}>Receive</Button>
+                </div>
+            )} */}
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col space-y-3 w-[550px]">
+          <Skeleton className="h-[330px] w-full rounded-xl" />
+          <div className="space-y-2">
+            <Skeleton className="h-4 w-full" />
+            <Skeleton className="h-4 w-[200px]" />
+          </div>
+        </div>
+      )}
+    </Wrapper>
+  );
 }

@@ -1,6 +1,5 @@
 // app/layout.tsx
-import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google";
+"use client";
 import "./globals.css";
 
 import { AppSidebar } from "@/components/app-sidebar";
@@ -8,16 +7,13 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import Web3ModalProvider from "@/context";
 import { cn } from "@/lib/utils";
+import { Inter as FontSans } from "next/font/google";
+import { RecoilRoot } from "recoil";
 
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
 });
-
-export const metadata: Metadata = {
-  title: "X Chain Shop",
-  description: "X Chain Shop",
-};
 
 export default function RootLayout({
   children,
@@ -32,20 +28,22 @@ export default function RootLayout({
           fontSans.variable
         )}
       >
-        <Web3ModalProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <SidebarProvider>
-              <AppSidebar />
-              <SidebarTrigger />
-              {children}
-            </SidebarProvider>
-          </ThemeProvider>
-        </Web3ModalProvider>
+        <RecoilRoot>
+          <Web3ModalProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <SidebarProvider>
+                <AppSidebar />
+                <SidebarTrigger />
+                {children}
+              </SidebarProvider>
+            </ThemeProvider>
+          </Web3ModalProvider>
+        </RecoilRoot>
       </body>
     </html>
   );

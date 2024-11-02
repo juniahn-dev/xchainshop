@@ -4,6 +4,7 @@ import { SkeletonCards } from "@/components/skeleton-cards";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Wrapper } from "@/components/wrapper";
 import useProducts from "@/hooks/useProducts";
 import { useAccount } from "@particle-network/connectkit";
 import Image from "next/image";
@@ -16,7 +17,7 @@ export default function Home() {
   const { address } = useAccount();
 
   return (
-    <main className="flex min-h-screen flex-col py-10 ml-10 w-full">
+    <Wrapper>
       <div className="flex flex-wrap gap-10">
         {products ? (
           products.map((product) => {
@@ -51,7 +52,7 @@ export default function Home() {
                       <Button
                         onClick={() => router.push(`/products/${product.id}`)}
                       >
-                        ${product.price}XRP Buy
+                        ${product.price}USDC Buy
                       </Button>
                     )}
                   </div>
@@ -63,6 +64,6 @@ export default function Home() {
           <SkeletonCards />
         )}
       </div>
-    </main>
+    </Wrapper>
   );
 }

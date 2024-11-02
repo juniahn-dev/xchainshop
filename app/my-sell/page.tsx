@@ -3,6 +3,7 @@ import { SkeletonCards } from "@/components/skeleton-cards";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
+import { Wrapper } from "@/components/wrapper";
 import useProducts from "@/hooks/useProducts";
 import { IProductProps } from "@/types/product";
 import { useAccount } from "@particle-network/connectkit";
@@ -23,7 +24,7 @@ export default function Home() {
   }, [address, products]);
 
   return (
-    <main className="flex min-h-screen flex-col py-10 ml-10 w-full">
+    <Wrapper>
       <div className="flex flex-wrap gap-10">
         {myProducts ? (
           myProducts.map((product) => {
@@ -68,6 +69,6 @@ export default function Home() {
           <SkeletonCards />
         )}
       </div>
-    </main>
+    </Wrapper>
   );
 }

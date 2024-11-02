@@ -9,6 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Wrapper } from "@/components/wrapper";
 import useProducts from "@/hooks/useProducts";
 import { IProductProps } from "@/types/product";
 import { useAccount } from "@particle-network/connectkit";
@@ -29,7 +30,7 @@ export default function Home() {
   }, [address, products]);
 
   return (
-    <main className="flex min-h-screen flex-col py-10 ml-10 w-full">
+    <Wrapper>
       <div className="flex flex-wrap gap-10 w-3/5">
         {myProducts &&
           myProducts.map((product) => {
@@ -68,6 +69,6 @@ export default function Home() {
             );
           })}
       </div>
-    </main>
+    </Wrapper>
   );
 }
