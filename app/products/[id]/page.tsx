@@ -1,7 +1,7 @@
 "use client";
 
 import pb from "@/api/pocketbase";
-import { useBalance } from "@/app/atom/balance";
+import { useBalance } from "@/atom/balance";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
