@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Address, createWalletClient, custom, encodeFunctionData, erc20Abi, formatUnits, parseUnits } from 'viem';
-import { baseSepolia, sepolia } from 'viem/chains';
+import {arbitrumSepolia, baseSepolia, sepolia} from 'viem/chains';
 import { acrossBridgePlugin } from '@/plugin/acrossBridgePlugin';
 import {
     BiconomyV2AccountInitData,
@@ -25,6 +25,7 @@ import {
     rawTx,
     singleTx
 } from 'klaster-sdk';
+import {useAccount, useAddress, useWallets} from "@particle-network/connectkit";
 
 const formSchema = z.object({
     recipient: z.string(),
@@ -54,6 +55,7 @@ const BASE_SEPOLIA = {
     USDC_ADDRESS: '0x036CbD53842c5426634e7929541eC2318f3dCF7e' as Address,
 };
 
+
 const CHAIN_LIST: { [key: string]: Chain } = {
     SEPOLIA: SEPOLIA,
     BASE_SEPOLIA: BASE_SEPOLIA,
@@ -68,7 +70,6 @@ const Klaster = () => {
     const [klaster, setKlaster] = useState<KlasterSDK<BiconomyV2AccountInitData> | null>(null);
     const [mUSDC, setMUSDC] = useState<any | null>(null);
     const [mcClient, setMcClient] = useState<any | null>(null);
-    const [signer, setSigner] = useState<any | null>(null);
     const [klasterAddress, setKlasterAddress] = useState<any[] | null>(null);
     const [totalUSDC, setTotalUSDC] = useState<string | null>(null);
     const [chainBalances, setChainBalances] = useState<any[] | null>(null);
@@ -76,7 +77,8 @@ const Klaster = () => {
     const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
     const [selectedFeeChain, setSelectedFeeChain] = useState<Chain | null>(null);
     const [selectedFeeToken, setSelectedFeeToken] = useState<string | null>(null);
-
+    const { address, isConnected } = useAccount();
+    const [primaryWallet] = useWallets();
 
     const getChainNameById = (chainId: number): string | undefined => {
         const chain = Object.values(CHAIN_LIST).find(chain => chain.CHAIN_ID === chainId);
@@ -88,14 +90,14 @@ const Klaster = () => {
             const signer = createWalletClient({
                 transport: custom((window as any).ethereum),
             });
+            if(!address) return;
 
-            setSigner(signer);
-            const [address] = await signer.getAddresses();
+
             console.log('address :', address);
 
             const klasterInit = await initKlaster({
                 accountInitData: loadBicoV2Account({
-                    owner: address,
+                    owner: address as Address,
                 }),
                 nodeUrl: klasterNodeHost.default,
             });
@@ -139,7 +141,7 @@ const Klaster = () => {
         };
 
         init();
-    }, []);
+    }, [address]);
 
     const handleChainChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const chainName = event.target.value;
@@ -195,14 +197,14 @@ const Klaster = () => {
         });
         console.log('iTx :', iTx);
         const quote = await klaster.getQuote(iTx);
-        const [address] = await signer.getAddresses();
         console.log('address :', address);
-        const signed = await signer.signMessage({
+        const signed = await  primaryWallet.getWalletClient().signMessage({
             message: {
                 raw: quote.itxHash,
             },
-            account: address,
+            account: address as Address,
         });
+
         const result = await klaster.execute(quote, signed);
         console.log(result.itxHash);
     };
