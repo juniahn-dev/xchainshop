@@ -9,13 +9,14 @@ Xchain shop offers simplicity and convenience for both users and store managers.
 #### [xchainshop.shop](https://xchainshop.shop/) | [xchainshop Deck](https://drive.google.com/file/d/1sJvtGBTozOvj9O8paR9k-O1Jycn--xL_/view?usp=sharing)
 
 # 🤔 Background
-**Xchain shop** was developed to streamline and modernize the ordering and payment process, particularly in overseas settings where traditional methods can be cumbersome. In many countries, ordering involves slow-paced interactions between customers and waitstaff, with additional hassles like separate cash tips. xchainshop addresses these challenges by enabling customers to scan a QR code at their table, browse the menu at their own pace, and place orders without unnecessary interactions.
+Xchain shop is a second-hand transaction service that is not widely used in overseas environments and is not yet active, but it would be good to utilize this in reverse to enter this blue ocean-like second-hand transaction P2P transaction platform for the first time and participate in a market where there is a lack of competitors, effectively and uniquely show our own service, and activate this P2P transaction a little more, and provide a way for users to easily make profits and resell various leftover products that are too good to throw away or new but unused products to make a little profit, or to quickly obtain necessary items from people and areas around them.
 
-Once the order is placed, customers can **`quickly and accurately pay using cryptocurrency or credit cards, including tips, all in one step.`** This not only simplifies the payment process but also eliminates the need for cash handling.
+Therefore, rather than focusing on fundamental issues, we have seen a successful case in the Korean market where a GPS-based second-hand transaction service called Carrot Market was successful and well-operated, so this second-hand transaction service is being provided to introduce a cryptocurrency payment system in overseas markets, to be reborn, to challenge the overseas second-hand transaction market, and to help users easily purchase and obtain necessary products around them.
 
-For restaurants, **Xchain shop** reduces the workload on waitstaff by eliminating the need for them to take **`orders manually, minimizing errors and confusion.`** Payments are processed in real-time, **`simplifying the settlement process`** and **`reducing the reliance on cash.`** **`Cryptocurrency payments also offer lower fees compared to credit cards, potentially boosting profits by 1-2%.`** Additionally, the use of blockchain technology ensures that revenue data is secure from manipulation, offering restaurants a **`trustworthy and efficient payment system.`**
+- **Sellers** simply write and upload the product name, description, price, image, and transaction details they want to sell.
+- **Buyers** simply check the list of products they need and purchase them with cryptocurrency.
 
-In essence, **Xchain shop** enhances convenience and security for both customers and restaurants, providing a forward-thinking solution that meets the needs of the modern dining experience.
+The payment method is cryptocurrency, and stable coins can be used for payment. In addition, since it provides multi-chain, it allows payments to be made regardless of the network.
 
 # ✨ Overview
 Everything from start to finish is designed to be easy, simple, and convenient, making it the ideal order and payment service.
