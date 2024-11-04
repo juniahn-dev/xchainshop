@@ -39,6 +39,7 @@ type Chain = {
     CHAIN: any;
     CHAIN_ID: number;
     USDC_ADDRESS: Address;
+    RPC_URL:string
 };
 
 const SEPOLIA = {
@@ -46,6 +47,7 @@ const SEPOLIA = {
     CHAIN: sepolia,
     CHAIN_ID: sepolia.id,
     USDC_ADDRESS: '0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238' as Address,
+    RPC_URL: "https://eth-sepolia.g.alchemy.com/v2/MVuRquu4XE6nUM1OQLUSNhiGltrtBprf",
 };
 
 const BASE_SEPOLIA = {
@@ -53,6 +55,7 @@ const BASE_SEPOLIA = {
     CHAIN: baseSepolia,
     CHAIN_ID: baseSepolia.id,
     USDC_ADDRESS: '0x036CbD53842c5426634e7929541eC2318f3dCF7e' as Address,
+    RPC_URL:"https://base-sepolia.g.alchemy.com/v2/MVuRquu4XE6nUM1OQLUSNhiGltrtBprf"
 };
 
 
@@ -106,7 +109,7 @@ const Klaster = () => {
                 Object.values(CHAIN_LIST).map((chain) => {
                     return {
                         chainId: chain.CHAIN_ID,
-                        rpcUrl: chain.CHAIN.rpcUrls.default.http[0],
+                        rpcUrl: chain.RPC_URL,
                     };
                 })
             );
