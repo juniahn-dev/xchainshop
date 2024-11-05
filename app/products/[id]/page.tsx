@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Wrapper } from "@/components/wrapper";
 import useProduct from "@/hooks/useProduct";
 import { useAccount, useWallets } from "@particle-network/connectkit";
+import { CHAIN_LIST } from "@/utils/chain";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
@@ -57,10 +58,12 @@ export default function Home() {
         args: [product.owner, Number(product.price) * 1000000],
       });
 
+      const selectedChain = CHAIN_LIST[product.destination.toUpperCase()];
+
       const tx = {
-        to: "0x1c7d4b196cb0c7b01d743fbc6116a902379c7238" as Address,
+        to: selectedChain.USDC_ADDRESS as Address,
         data,
-        chain,
+        chain: selectedChain.CHAIN,
         account: account as Address,
       };
       const walletClient = primaryWallet.getWalletClient();
@@ -219,7 +222,13 @@ export default function Home() {
               <div className="flex items-center">
                 {account} is bought
                 <Button className="ml-3">
-                  <Link href={`https://sepolia.etherscan.io/tx/${product.tx}`}>
+                  <Link
+                    href={
+                      product.destination === "SEPOLIA"
+                        ? `https://sepolia.etherscan.io/tx/${product.tx}`
+                        : `https://sepolia.basescan.org/tx/${product.tx}`
+                    }
+                  >
                     Go to Tx
                   </Link>
                 </Button>

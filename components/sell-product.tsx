@@ -10,6 +10,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -26,6 +35,7 @@ const formSchema = z.object({
   state: z.string().optional(),
   description: z.string().default("").optional(),
   owner: z.string().optional(),
+  destination: z.string().optional(),
 });
 
 type FormValues = z.infer<typeof formSchema>;
@@ -48,6 +58,7 @@ export const SellProduct: React.FC = () => {
       state: "Sell",
       image:
         "https://lh5.googleusercontent.com/p/AF1QipP4dsFswNUlKJayzgH8xVVzDlp03p038KKjIJ8w=w203-h135-k-no",
+      destination: "Eth",
     },
   });
 
@@ -163,6 +174,32 @@ export const SellProduct: React.FC = () => {
                   <FormLabel>Owner</FormLabel>
                   <FormControl>
                     <Input disabled={true} placeholder="Owner" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+             <FormField
+              control={form.control}
+              name="destination"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Destination</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value || ""}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a destination" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem value="SEPOLIA">SEPOLIA</SelectItem>
+                          <SelectItem value="BASE_SEPOLIA">BASE_SEPOLIA</SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>

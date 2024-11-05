@@ -9,4 +9,5 @@ export interface IProductProps {
   tx: string;
   buyer: string;
   owner: string;
+  destination: string;
 }
