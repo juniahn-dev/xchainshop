@@ -1,15 +1,12 @@
 "use client";
 import { SkeletonCards } from "@/components/skeleton-cards";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Wrapper } from "@/components/wrapper";
 import useProducts from "@/hooks/useProducts";
 import { IProductProps } from "@/types/product";
 import { useAccount } from "@particle-network/connectkit";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ProductCard } from "@/components/ProductCard";
 
 export default function Home() {
   const router = useRouter();
@@ -27,44 +24,18 @@ export default function Home() {
     <Wrapper>
       <div className="flex flex-wrap gap-10">
         {myProducts ? (
-          myProducts.map((product) => {
-            return (
-              <Card
-                key={product.id}
-                className="max-w-md overflow-hidden w-[350px] font-mono"
-              >
-                <CardContent className="p-0">
-                  <div className="relative w-full aspect-[4/3]">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      style={{ objectFit: "cover" }}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  </div>
-                </CardContent>
-                <CardFooter className="flex flex-col p-4">
-                  <div className="w-full mb-4">
-                    <h2 className="text-xl font-bold">{product.name}</h2>
-                    <p className="text-sm text-gray-600">
-                      {product.description}
-                    </p>
-                  </div>
-                  <div className="flex w-full space-x-2">
-                    <Badge className="text-lg" variant="outline">
-                      {product.state}
-                    </Badge>
-                    <Button
-                      onClick={() => router.push(`/products/${product.id}`)}
-                    >
-                      View
-                    </Button>
-                  </div>
-                </CardFooter>
-              </Card>
-            );
-          })
+          myProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              id={product.id}
+              image={product.image}
+              name={product.name}
+              description={product.description}
+              price={product.price}
+              state={product.state}
+              address={address || ""}
+            />
+          ))
         ) : (
           <SkeletonCards />
         )}

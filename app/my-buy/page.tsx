@@ -1,21 +1,13 @@
 "use client";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+
 import { Wrapper } from "@/components/wrapper";
 import useProducts from "@/hooks/useProducts";
 import { IProductProps } from "@/types/product";
 import { useAccount } from "@particle-network/connectkit";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ProductCard } from "@/components/ProductCard";
+import { SkeletonCards } from "@/components/skeleton-cards";
 
 export default function Home() {
   const router = useRouter();
@@ -32,42 +24,22 @@ export default function Home() {
   return (
     <Wrapper>
       <div className="flex flex-wrap gap-10 w-3/5">
-        {myProducts &&
-          myProducts.map((product) => {
-            return (
-              <Card key={product.id} className="w-[350px] font-mono">
-                <CardHeader>
-                  <CardTitle>{product.name}</CardTitle>
-                  <CardDescription>{product.description}</CardDescription>
-                  <CardDescription>{product.location}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <form>
-                    <div className="grid w-full items-center gap-4">
-                      <div className="flex flex-col space-y-1.5">
-                        <Image
-                          src={product.image}
-                          width={300}
-                          height={300}
-                          alt={""}
-                        />
-                      </div>
-                    </div>
-                  </form>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Badge className="text-lg" variant="outline">
-                    {product.state}
-                  </Badge>
-                  <Button
-                    onClick={() => router.push(`/products/${product.id}`)}
-                  >
-                    View
-                  </Button>
-                </CardFooter>
-              </Card>
-            );
-          })}
+        {myProducts ? (
+          myProducts.map((product) => (
+            <ProductCard
+              key={product.id}
+              id={product.id}
+              image={product.image}
+              name={product.name}
+              description={product.description}
+              price={product.price}
+              state={product.state}
+              address={address || ""}
+            />
+          ))
+        ) : (
+          <SkeletonCards />
+        )}
       </div>
     </Wrapper>
   );

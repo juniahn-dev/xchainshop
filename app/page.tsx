@@ -1,14 +1,12 @@
 "use client";
 
 import { SkeletonCards } from "@/components/skeleton-cards";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Wrapper } from "@/components/wrapper";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import useProducts from "@/hooks/useProducts";
 import { useAccount } from "@particle-network/connectkit";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { ProductCard } from "@/components/ProductCard";
 
 export default function Home() {
   const router = useRouter();
@@ -16,53 +14,62 @@ export default function Home() {
   const { data: products } = useProducts();
   const { address } = useAccount();
 
-  return (
-    <Wrapper>
+  const renderProducts = (state: string) => {
+    return (
       <div className="flex flex-wrap gap-10">
         {products ? (
-          products.map((product) => {
-            return (
-              <Card
+          products
+            .filter((product) => state === "All" || product.state === state)
+            .map((product) => (
+              <ProductCard
                 key={product.id}
-                className="max-w-md overflow-hidden w-[350px] font-mono"
-              >
-                <CardContent className="p-0">
-                  <div className="relative w-full aspect-[4/3]">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      style={{ objectFit: "cover" }}
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    />
-                  </div>
-                </CardContent>
-                <CardFooter className="flex flex-col p-4">
-                  <div className="w-full mb-4">
-                    <h2 className="text-xl font-bold">{product.name}</h2>
-                    <p className="text-sm text-gray-600">
-                      {product.description}
-                    </p>
-                  </div>
-                  <div className="flex w-full space-x-2">
-                    <Badge className="text-lg" variant="outline">
-                      {product.state}
-                    </Badge>
-                    {product.state === "Sell" && product.owner !== address && (
-                      <Button
-                        onClick={() => router.push(`/products/${product.id}`)}
-                      >
-                        ${product.price}USDC Buy
-                      </Button>
-                    )}
-                  </div>
-                </CardFooter>
-              </Card>
-            );
-          })
+                id={product.id}
+                image={product.image}
+                name={product.name}
+                description={product.description}
+                price={product.price.toString()}
+                state={product.state}
+                address={address || ""}
+              />
+            ))
         ) : (
           <SkeletonCards />
         )}
+      </div>
+    );
+  };
+
+  return (
+    <Wrapper>
+      <div className="container mx-auto p-6">
+        <h1 className="text-2xl font-bold mb-4 font-mono">XChainshop</h1>
+        <Tabs defaultValue="All" className="mb-8">
+          <TabsList className="flex justify-start space-x-4 mb-4 bg-transparent">
+            <TabsTrigger
+              value="All"
+              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg font-mono data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
+            >
+              All
+            </TabsTrigger>
+            <TabsTrigger
+              value="Sell"
+              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg font-mono data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
+            >
+              For Sale
+            </TabsTrigger>
+            <TabsTrigger
+              value="Reserved"
+              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg font-mono data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
+            >
+              Reserved
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="All">{renderProducts("All")}</TabsContent>
+          <TabsContent value="Sell">{renderProducts("Sell")}</TabsContent>
+          <TabsContent value="Reserved">
+            {renderProducts("Reserved")}
+          </TabsContent>
+        </Tabs>
       </div>
     </Wrapper>
   );
