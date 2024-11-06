@@ -3,12 +3,15 @@
 The Simple | Low | Re-Cycle Envirorment.
 
 Xchain Shop is Re-Commerce Platform.
+
 - [xchainshop Deck](https://drive.google.com/file/d/1sJvtGBTozOvj9O8paR9k-O1Jycn--xL_/view?usp=sharing)
 
 ### Smart Contract
+
 - [Particle Connect]() | [Klaster Contract]() | [Agoric Contract]()
 
 # Background
+
 Xchain shop is a second-hand transaction service that is not widely used in overseas environments and is not yet active, but it would be good to utilize this in reverse to enter this blue ocean-like second-hand transaction P2P transaction platform for the first time and participate in a market where there is a lack of competitors, effectively and uniquely show our own service, and activate this P2P transaction a little more, and provide a way for users to easily make profits and resell various leftover products that are too good to throw away or new but unused products to make a little profit, or to quickly obtain necessary items from people and areas around them.
 
 Therefore, rather than focusing on fundamental issues, we have seen a successful case in the Korean market where a GPS-based second-hand transaction service called Carrot Market was successful and well-operated, so this second-hand transaction service is being provided to introduce a cryptocurrency payment system in overseas markets, to be reborn, to challenge the overseas second-hand transaction market, and to help users easily purchase and obtain necessary products around them.
@@ -19,6 +22,7 @@ Therefore, rather than focusing on fundamental issues, we have seen a successful
 The payment method is cryptocurrency, and stable coins can be used for payment. In addition, since it provides multi-chain, it allows payments to be made regardless of the network.
 
 # Problem
+
 - **Limited Existing Platforms**: Overseas second-hand services are scarce, and those available often lack support for diverse payment methods, limiting accessibility for many users.
 
 - **Absence of Localized, Low-Cost Payment Options**: Conventional local payment methods, such as cash or credit card, often incur high fees around 10%. Xchain Shop addresses this by introducing cryptocurrency payments, allowing users to enjoy significantly lower transaction fees, approximately 2-3%.
@@ -45,22 +49,27 @@ These solutions position Xchain Shop as a user-friendly, secure, and versatile P
 
 # 🔑 Key Features
 
-1. **Cryptocurrency Payment System**  
+1. **Cryptocurrency Payment System**
+
    - Supports stablecoins and multiple blockchains, enabling users to make secure and affordable transactions with fees as low as 2-3%.
 
-2. **Cross-Chain Compatibility**  
+2. **Cross-Chain Compatibility**
+
    - Utilizes **Klaster** for EVM-compatible networks and **Agoric** for Cosmos IBC networks, allowing seamless transactions with USDC across different ecosystems.
 
-3. **User-Friendly Access**  
+3. **User-Friendly Access**
+
    - With **Particle Connect SDK**, users can easily sign up using email or social media, making the platform accessible and straightforward.
 
-4. **Enhanced Security with Escrow**  
+4. **Enhanced Security with Escrow**
+
    - Escrow services ensure secure transactions, protecting users against scams in P2P second-hand trades.
 
-5. **Intuitive UX for Quick Transactions**  
+5. **Intuitive UX for Quick Transactions**
+
    - Simple listing and purchasing processes with an easy-to-navigate interface, allowing users to quickly post items and make purchases.
 
-6. **GPS-Based Local Trading**  
+6. **GPS-Based Local Trading**
    - Facilitates location-based transactions so users can find and purchase items within their local community, promoting trust and convenience.
 
 <details>
@@ -108,4 +117,3 @@ These solutions position Xchain Shop as a user-friendly, secure, and versatile P
 
 </div>
 </details>
-
