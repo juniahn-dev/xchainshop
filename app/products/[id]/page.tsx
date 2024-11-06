@@ -16,10 +16,6 @@ import { useCallback } from "react";
 import { toast } from "sonner";
 import { encodeFunctionData, type Address } from "viem";
 
-// import crypto from "crypto";
-// import { PreimageSha256 } from "five-bells-condition";
-// import { web3auth } from "@/utils/web3-auth";
-
 export default function Home() {
   const [primaryWallet] = useWallets();
 
@@ -30,6 +26,7 @@ export default function Home() {
   const { data: product } = useProduct(id);
 
   const onSendTransaction = useCallback(async () => {
+    
     if (!product) {
       return;
     }
@@ -91,165 +88,100 @@ export default function Home() {
     });
     window.location.reload();
   };
-  // const onReceive =async() => {
-  //   if (!account){
-  //     alert('account loading..')
-  //     return;
-  //   }
-  //   if (!product) {
-  //     return;
-  //   }
-  //   console.log(product)
-  //   const tx = {
-  //     TransactionType: "EscrowFinish",
-  //     Account: account,
-  //     Owner: product.buyer,
-  //     OfferSequence: product.sequence, // 에스크로 트랜잭션의 시퀀스 번호
-  //     Condition: product.condition, // 생성된 조건
-  //     Fulfillment: product.fulfillment
-  //   };
-
-  //   console.log(tx)
-  //   const txSign: any = await provider?.request({
-  //     method: "xrpl_submitTransaction",
-  //     params: {
-  //       transaction: tx,
-  //     },
-  //   });
-  //   console.log("txSign : ",txSign)
-  //   await pb.collection("xchainshop").update(product.id, {
-  //     state: "Complete",
-  //   });
-  //   //window.location.reload()
-  // }
-  // const onEscrowSendTransaction = async () => {
-  //   try {
-
-  //     if (!account){
-  //       alert('account loding..')
-  //       return;
-  //     }
-  //     const preimageData = crypto.randomBytes(32);
-
-  //     // Create a new PreimageSha256 fulfillment
-  //     const myFulfillment = new PreimageSha256();
-  //     myFulfillment.setPreimage(preimageData);
-
-  //     // Get the condition in hex format
-  //     const conditionHex = myFulfillment
-  //       .getConditionBinary()
-  //       .toString("hex")
-  //       .toUpperCase();
-  //     console.log("Condition in hex format: ", conditionHex);
-
-  //     let finishAfter = new Date(new Date().getTime() / 1000);
-  //     finishAfter = new Date(finishAfter.getTime() * 1000 + 3);
-  //     console.log("This escrow will finish after!!: ", finishAfter);
-
-  //     console.log(product)
-  //     if (!product) {
-  //       return;
-  //     }
-
-  //     const tx = {
-  //       TransactionType: "EscrowCreate",
-  //       Account: account,
-  //       Amount: xrpToDrops(product.price),
-  //       Destination: product.owner,
-  //       Condition: conditionHex, // SHA-256 해시 조건
-  //       FinishAfter: isoTimeToRippleTime(finishAfter.toISOString()), // Refer for more details: https://xrpl.org/basic-data-types.html#specifying-time
-  //     };
-  //     console.log("tx", tx)
-  //     const txSign: any = await provider?.request({
-  //       method: "xrpl_submitTransaction",
-  //       params: {
-  //         transaction: tx,
-  //       },
-  //     });
-
-  //     console.log("txRes", txSign);
-  //     console.log(
-  //       "txRes.result.tx_json.OfferSequence :",
-  //       txSign.result.tx_json.Sequence
-  //     );
-  //     console.log("condition : ", conditionHex);
-  //     console.log(
-  //       "fullfillment : ",
-  //       myFulfillment.serializeBinary().toString("hex").toUpperCase()
-  //     );
-  //     const txHash = txSign.result.tx_json.hash; // Extract transaction hash from the response
-
-  //     await pb.collection("xchainshop").update(product.id, {
-  //       txhash: txHash,
-  //       fulfillment: myFulfillment
-  //         .serializeBinary()
-  //         .toString("hex")
-  //         .toUpperCase(),
-  //       condition: conditionHex,
-  //       sequence: txSign.result.tx_json.Sequence,
-  //       state: "Reserved",
-  //       buyer: account,
-  //     });
-  //     alert("Escrow Success");
-  //     window.location.reload();
-  //   } catch (error) {
-  //     console.log("error", error);
-  //   }
-  // };
 
   return (
     <Wrapper>
       {product ? (
-        <div className="z-10 w-full font-mono text-white space-y-5">
-          <Image src={product.image} width={500} height={500} alt={""} />
-          <Badge variant="secondary" className="text-2xl">
-            {product.state}
-          </Badge>
-          <h1 className="text-2xl font-extrabold">{product.name}</h1>
-          <h1>{product.description}</h1>
-
-          <div className="space-y-5">
-            <h1>Price : {product.price} USDC</h1>
-            <h1>Available : {balance} USDC</h1>
-
-            {product?.state == "Sell" && product?.owner !== account && (
-              <div className="flex space-x-4">
-                <Button onClick={onSendTransaction}>Buy</Button>
+        <div className="z-10 w-full font-mono text-white space-y-5 flex gap-3">
+          <div>
+            <Image
+              className="rounded-xl"
+              src={product.image}
+              width={600}
+              height={700}
+              alt={""}
+            />
+          </div>
+          <div className="flex flex-col gap-9 px-3">
+            <Badge
+              variant="outline"
+              className={`flex items-center ${
+                product.state === "Sell"
+                  ? "bg-green-200 text-green-900"
+                  : "bg-gray-200 text-gray-600"
+              } font-medium font-mono border-none rounded-xl px-2 py-1 w-[90px]`}
+            >
+              <span
+                className={`w-2 h-2 rounded-full mr-2 ${
+                  product.state === "Sell" ? "bg-green-700" : "bg-gray-600"
+                }`}
+              ></span>
+              {product.state === "Sell" ? "For Sale" : "Reserved"}
+            </Badge>
+            <h1 className="text-3xl font-extrabold text-black dark:text-white">{product.name}</h1>
+            <span className="border-b border-gray-400 h-px w-full"></span>
+            <h1 className="text-bold text-2xl text-black dark:text-white">About Product</h1>
+            <h1 className="text-black dark:text-white">{product.description}</h1>
+            <span className="border-b border-gray-400 h-px w-full"></span>
+            <div className="flex justify-evenly">
+              <div className="flex flex-col gap-1">
+                <h1 className="font-bold text-black dark:text-white">Price</h1>
+                <p className="text-black dark:text-white">{product.price} USDC</p>
               </div>
-            )}
+              <span className="border-l border-gray-400 w-px h-full "></span>
+              <div className="flex flex-col gap-1">
+                <h1 className="font-bold text-black dark:text-white">Current Balance</h1>
+                <p className="text-black dark:text-white">{balance} USDC</p>
+              </div>
+              <span className="border-l border-gray-400 w-px h-full"></span>
+              <div className="flex flex-col gap-1">
+                <h1 className="font-bold text-black dark:text-white">Destination</h1>
+                <p className="text-black dark:text-white">{product.destination}</p>
+              </div>
+            </div>
 
-            {product?.buyer === account && (
-              <div className="flex items-center">
-                {account} is bought
-                <Button className="ml-3">
-                  <Link
-                    href={
-                      product.destination === "SEPOLIA"
-                        ? `https://sepolia.etherscan.io/tx/${product.tx}`
-                        : `https://sepolia.basescan.org/tx/${product.tx}`
-                    }
-                  >
-                    Go to Tx
-                  </Link>
-                </Button>
-              </div>
-            )}
-
-            {product?.state === "Sell" && product?.owner === account && (
-              <div className="flex space-x-4">
-                <Button onClick={onSendTransaction}>Delete</Button>
-              </div>
-            )}
-            {product?.state === "Reserved" && product?.owner === account && (
-              <div className="flex space-x-4">
-                <Button onClick={onApprove}>Approve</Button>
-              </div>
-            )}
-            {/* {product?.state === "Approve" && product?.owner === account && (
+            <div className="space-y-5 px-2">
+              {product?.state == "Sell" && product?.owner !== account && (
                 <div className="flex space-x-4">
-                  <Button onClick={onReceive}>Receive</Button>
+                  <Button
+                    onClick={onSendTransaction}
+                    className="bg-purple-600 text-white hover:bg-purple-700 py-2 px-4 rounded-3xl w-full py-6 text-xl font-bold"
+                  >
+                    Buy Now
+                  </Button>
                 </div>
-            )} */}
+              )}
+
+              {product?.buyer === account && (
+                <div className="flex items-center text-black dark:text-white">
+                  {account} is bought
+                  <Button className="ml-3 text-black dark:text-white">
+                    <Link
+                      href={
+                        product.destination === "SEPOLIA"
+                          ? `https://sepolia.etherscan.io/tx/${product.tx}`
+                          : `https://sepolia.basescan.org/tx/${product.tx}`
+                      }
+                    >
+                      Go to Tx
+                    </Link>
+                  </Button>
+                </div>
+              )}
+
+              {product?.state === "Sell" && product?.owner === account && (
+                <div className="flex space-x-4">
+                  <Button onClick={onSendTransaction}className="bg-purple-600 text-white hover:bg-purple-700 py-2 px-4 rounded-3xl w-full py-6 text-xl font-bold">
+                    Delete
+                    </Button>
+                </div>
+              )}
+              {product?.state === "Reserved" && product?.owner === account && (
+                <div className="flex space-x-4 text-black dark:text-white">
+                  <Button onClick={onApprove}>Approve</Button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       ) : (

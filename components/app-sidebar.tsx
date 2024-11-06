@@ -1,4 +1,4 @@
-import { Barcode, HandHelping, Home, ScanLine } from "lucide-react";
+import { Home, ScanLine,User } from "lucide-react";
 
 import {
   Sidebar,
@@ -27,14 +27,9 @@ const items = [
     icon: ScanLine,
   },
   {
-    title: "My Buy",
-    url: "/my-buy",
-    icon: Barcode,
-  },
-  {
-    title: "My Sell",
-    url: "/my-sell",
-    icon: HandHelping,
+    title: "My",
+    url: "/my",
+    icon: User,
   },
 ];
 

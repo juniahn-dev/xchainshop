@@ -81,7 +81,7 @@ export const SellProduct: React.FC = () => {
 
   return (
     <>
-      <h1 className="font-bold text-lg">{title}</h1>
+      <h1 className="font-bold text-lg text-black dark:text-white">{title}</h1>
       <Separator />
       <Form {...form}>
         <form
@@ -94,12 +94,13 @@ export const SellProduct: React.FC = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Product name</FormLabel>
+                  <FormLabel className="text-black dark:text-white">Product name</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
                       placeholder="Product name"
                       {...field}
+                      className="text-black dark:text-white"
                     />
                   </FormControl>
                   <FormMessage />
@@ -111,12 +112,13 @@ export const SellProduct: React.FC = () => {
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel className="text-black dark:text-white">Description</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
                       placeholder="description"
                       {...field}
+                      className="text-black dark:text-white"
                     />
                   </FormControl>
                   <FormMessage />
@@ -128,12 +130,13 @@ export const SellProduct: React.FC = () => {
               name="location"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Location</FormLabel>
+                  <FormLabel className="text-black dark:text-white">Location</FormLabel>
                   <FormControl>
                     <Input
                       disabled={loading}
                       placeholder="Sell Location"
                       {...field}
+                      className="text-black dark:text-white"
                     />
                   </FormControl>
                   <FormMessage />
@@ -145,9 +148,9 @@ export const SellProduct: React.FC = () => {
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Image</FormLabel>
+                  <FormLabel className="text-black dark:text-white">Image</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Image" {...field} />
+                    <Input disabled={loading} placeholder="Image" {...field} className="text-black dark:text-white"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -158,9 +161,9 @@ export const SellProduct: React.FC = () => {
               name="price"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Price(USDC)</FormLabel>
+                  <FormLabel className="text-black dark:text-white">Price(USDC)</FormLabel>
                   <FormControl>
-                    <Input disabled={loading} placeholder="Price" {...field} />
+                    <Input disabled={loading} placeholder="Price" {...field} className="text-black dark:text-white"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -171,7 +174,7 @@ export const SellProduct: React.FC = () => {
               name="owner"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Owner</FormLabel>
+                  <FormLabel className="text-black dark:text-white">Owner</FormLabel>
                   <FormControl>
                     <Input disabled={true} placeholder="Owner" {...field} />
                   </FormControl>
@@ -183,8 +186,8 @@ export const SellProduct: React.FC = () => {
               control={form.control}
               name="destination"
               render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Destination</FormLabel>
+                <FormItem className="text-black dark:text-white">
+                  <FormLabel className="text-black dark:text-white">Destination</FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={field.onChange}
@@ -195,10 +198,10 @@ export const SellProduct: React.FC = () => {
                       </SelectTrigger>
                       <SelectContent>
                         <SelectGroup>
-                          <SelectItem value="SEPOLIA">SEPOLIA</SelectItem>
-                          <SelectItem value="BASE_SEPOLIA">BASE_SEPOLIA</SelectItem>
+                          <SelectItem value="SEPOLIA" className="text-black dark:text-white">SEPOLIA</SelectItem>
+                          <SelectItem value="BASE_SEPOLIA" className="text-black dark:text-white">BASE_SEPOLIA</SelectItem>
                         </SelectGroup>
-                      </SelectContent>
+                      </SelectContent >
                     </Select>
                   </FormControl>
                   <FormMessage />
@@ -206,7 +209,7 @@ export const SellProduct: React.FC = () => {
               )}
             />
           </div>
-          <Button disabled={loading} className="ml-auto" type="submit">
+          <Button disabled={loading} className="ml-auto text-black dark:text-white" type="submit">
             {action}
           </Button>
         </form>
