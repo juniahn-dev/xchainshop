@@ -1,86 +1,118 @@
 "use client";
 
 import pb from "@/api/pocketbase";
-import { useBalance } from "@/atom/balance";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Wrapper } from "@/components/wrapper";
 import useProduct from "@/hooks/useProduct";
+import { acrossBridgePlugin } from "@/plugin/acrossBridgePlugin";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useAccount, useWallets } from "@particle-network/connectkit";
-import { CHAIN_LIST } from "@/utils/chain";
+import {
+  BiconomyV2AccountInitData,
+  buildItx,
+  buildMultichainReadonlyClient,
+  buildTokenMapping,
+  deployment,
+  encodeBridgingOps,
+  initKlaster,
+  klasterNodeHost,
+  KlasterSDK,
+  loadBicoV2Account,
+  PaymentTokenSymbol,
+  rawTx,
+  singleTx,
+} from "klaster-sdk";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { useCallback } from "react";
+import { uniq } from "ramda";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { encodeFunctionData, type Address } from "viem";
-
-// import crypto from "crypto";
-// import { PreimageSha256 } from "five-bells-condition";
-// import { web3auth } from "@/utils/web3-auth";
+import {
+  createWalletClient,
+  custom,
+  encodeFunctionData,
+  erc20Abi,
+  formatUnits,
+  parseUnits,
+  type Address,
+} from "viem";
+import { baseSepolia, sepolia } from "viem/chains";
+import * as z from "zod";
 
 export default function Home() {
-  const [primaryWallet] = useWallets();
+  const [klaster, setKlaster] =
+    useState<KlasterSDK<BiconomyV2AccountInitData> | null>(null);
+  const [mUSDC, setMUSDC] = useState<any | null>(null);
+  const [mcClient, setMcClient] = useState<any | null>(null);
+  const [klasterAddress, setKlasterAddress] = useState<any[] | null>(null);
+  const [totalUSDC, setTotalUSDC] = useState<string | null>(null);
+  const [chainBalances, setChainBalances] = useState<any[] | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
+  const [selectedFeeChain, setSelectedFeeChain] = useState<Chain | null>(null);
+  const [selectedFeeToken, setSelectedFeeToken] = useState<string | null>(null);
 
+  const [primaryWallet] = useWallets();
   const params = useParams();
   const { id } = params as { id: string };
-  const { balance } = useBalance();
-  const { address: account, chain } = useAccount();
+  const { address: account } = useAccount();
   const { data: product } = useProduct(id);
 
-  const onSendTransaction = useCallback(async () => {
-    if (!product) {
-      return;
-    }
-    if (!account) {
-      alert("account loading..");
-      return;
-    }
+  const formSchema = z.object({
+    recipient: z.string(),
+    amount: z.any(),
+  });
 
-    try {
-      const usdcAbi = [
-        {
-          inputs: [
-            { name: "to", type: "address" },
-            { name: "amount", type: "uint256" },
-          ],
-          name: "transfer",
-          outputs: [{ name: "", type: "bool" }],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-      ];
+  type FormValues = z.infer<typeof formSchema>;
 
-      const data = encodeFunctionData({
-        abi: usdcAbi,
-        functionName: "transfer",
-        args: [product.owner, Number(product.price) * 1000000],
-      });
+  type Chain = {
+    NAME: string;
+    CHAIN: any;
+    CHAIN_ID: number;
+    USDC_ADDRESS: Address;
+    RPC_URL: string;
+  };
 
-      const selectedChain = CHAIN_LIST[product.destination.toUpperCase()];
+  const CHAIN_LIST = useMemo(() => {
+    const SEPOLIA = {
+      NAME: "SEPOLIA",
+      CHAIN: sepolia,
+      CHAIN_ID: sepolia.id,
+      USDC_ADDRESS: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238" as Address,
+      RPC_URL:
+        "https://eth-sepolia.g.alchemy.com/v2/MVuRquu4XE6nUM1OQLUSNhiGltrtBprf",
+    };
 
-      const tx = {
-        to: selectedChain.USDC_ADDRESS as Address,
-        data,
-        chain: selectedChain.CHAIN,
-        account: account as Address,
-      };
-      const walletClient = primaryWallet.getWalletClient();
-      const transactionResponse = await walletClient.sendTransaction(tx);
+    const BASE_SEPOLIA = {
+      NAME: "BASE_SEPOLIA",
+      CHAIN: baseSepolia,
+      CHAIN_ID: baseSepolia.id,
+      USDC_ADDRESS: "0x036CbD53842c5426634e7929541eC2318f3dCF7e" as Address,
+      RPC_URL:
+        "https://base-sepolia.g.alchemy.com/v2/MVuRquu4XE6nUM1OQLUSNhiGltrtBprf",
+    };
 
-      await pb.collection("xchainshop").update(product.id, {
-        state: "Reserved",
-        buyer: account,
-        tx: transactionResponse,
-      });
-      window.location.reload();
-    } catch (e: any) {
-      toast("Tx Error", {
-        description: e.message,
-      });
-    }
-  }, [account, chain, primaryWallet, product]);
+    return {
+      SEPOLIA,
+      BASE_SEPOLIA,
+    };
+  }, []);
+
+  const FEE_TOKEN: { [key: string]: string } = {
+    ETH: "ETH",
+    USDC: "USDC",
+  };
 
   const onApprove = async () => {
     if (!product) {
@@ -91,111 +123,187 @@ export default function Home() {
     });
     window.location.reload();
   };
-  // const onReceive =async() => {
-  //   if (!account){
-  //     alert('account loading..')
-  //     return;
-  //   }
-  //   if (!product) {
-  //     return;
-  //   }
-  //   console.log(product)
-  //   const tx = {
-  //     TransactionType: "EscrowFinish",
-  //     Account: account,
-  //     Owner: product.buyer,
-  //     OfferSequence: product.sequence, // 에스크로 트랜잭션의 시퀀스 번호
-  //     Condition: product.condition, // 생성된 조건
-  //     Fulfillment: product.fulfillment
-  //   };
 
-  //   console.log(tx)
-  //   const txSign: any = await provider?.request({
-  //     method: "xrpl_submitTransaction",
-  //     params: {
-  //       transaction: tx,
-  //     },
-  //   });
-  //   console.log("txSign : ",txSign)
-  //   await pb.collection("xchainshop").update(product.id, {
-  //     state: "Complete",
-  //   });
-  //   //window.location.reload()
-  // }
-  // const onEscrowSendTransaction = async () => {
-  //   try {
+  const getChainNameById = useCallback(
+    (chainId: number): string | undefined => {
+      const chain = Object.values(CHAIN_LIST).find(
+        (chain) => chain.CHAIN_ID === chainId
+      );
+      return chain ? chain.NAME : undefined;
+    },
+    [CHAIN_LIST]
+  );
 
-  //     if (!account){
-  //       alert('account loding..')
-  //       return;
-  //     }
-  //     const preimageData = crypto.randomBytes(32);
+  useEffect(() => {
+    const init = async () => {
+      const signer = createWalletClient({
+        transport: custom((window as any).ethereum),
+      });
+      if (!account) return;
 
-  //     // Create a new PreimageSha256 fulfillment
-  //     const myFulfillment = new PreimageSha256();
-  //     myFulfillment.setPreimage(preimageData);
+      const klasterInit = await initKlaster({
+        accountInitData: loadBicoV2Account({
+          owner: account as Address,
+        }),
+        nodeUrl: klasterNodeHost.default,
+      });
 
-  //     // Get the condition in hex format
-  //     const conditionHex = myFulfillment
-  //       .getConditionBinary()
-  //       .toString("hex")
-  //       .toUpperCase();
-  //     console.log("Condition in hex format: ", conditionHex);
+      const mcClient = buildMultichainReadonlyClient(
+        Object.values(CHAIN_LIST).map((chain) => {
+          return {
+            chainId: chain.CHAIN_ID,
+            rpcUrl: chain.RPC_URL,
+          };
+        })
+      );
+      const mcUSDC = buildTokenMapping(
+        Object.values(CHAIN_LIST).map((chain) =>
+          deployment(chain.CHAIN_ID, chain.USDC_ADDRESS)
+        )
+      );
 
-  //     let finishAfter = new Date(new Date().getTime() / 1000);
-  //     finishAfter = new Date(finishAfter.getTime() * 1000 + 3);
-  //     console.log("This escrow will finish after!!: ", finishAfter);
+      const uBalance = await mcClient.getUnifiedErc20Balance({
+        tokenMapping: mcUSDC,
+        account: klasterInit.account,
+      });
+      const totalUSDC = formatUnits(uBalance.balance, uBalance.decimals);
+      const chainBalances = uBalance.breakdown.map((balance) => {
+        return {
+          chain: getChainNameById(balance.chainId),
+          balance: formatUnits(balance.amount, uBalance.decimals),
+        };
+      });
 
-  //     console.log(product)
-  //     if (!product) {
-  //       return;
-  //     }
+      const klasterAddress = klasterInit.account.getAddresses(
+        Object.values(CHAIN_LIST).map((chain) => chain.CHAIN_ID)
+      );
 
-  //     const tx = {
-  //       TransactionType: "EscrowCreate",
-  //       Account: account,
-  //       Amount: xrpToDrops(product.price),
-  //       Destination: product.owner,
-  //       Condition: conditionHex, // SHA-256 해시 조건
-  //       FinishAfter: isoTimeToRippleTime(finishAfter.toISOString()), // Refer for more details: https://xrpl.org/basic-data-types.html#specifying-time
-  //     };
-  //     console.log("tx", tx)
-  //     const txSign: any = await provider?.request({
-  //       method: "xrpl_submitTransaction",
-  //       params: {
-  //         transaction: tx,
-  //       },
-  //     });
+      setTotalUSDC(totalUSDC);
+      setChainBalances(chainBalances);
+      setKlasterAddress(klasterAddress);
+      setKlaster(klasterInit);
+      setMUSDC(mcUSDC);
+      setMcClient(mcClient);
+      setLoading(false);
+    };
 
-  //     console.log("txRes", txSign);
-  //     console.log(
-  //       "txRes.result.tx_json.OfferSequence :",
-  //       txSign.result.tx_json.Sequence
-  //     );
-  //     console.log("condition : ", conditionHex);
-  //     console.log(
-  //       "fullfillment : ",
-  //       myFulfillment.serializeBinary().toString("hex").toUpperCase()
-  //     );
-  //     const txHash = txSign.result.tx_json.hash; // Extract transaction hash from the response
+    init();
+  }, [CHAIN_LIST, account, getChainNameById]);
 
-  //     await pb.collection("xchainshop").update(product.id, {
-  //       txhash: txHash,
-  //       fulfillment: myFulfillment
-  //         .serializeBinary()
-  //         .toString("hex")
-  //         .toUpperCase(),
-  //       condition: conditionHex,
-  //       sequence: txSign.result.tx_json.Sequence,
-  //       state: "Reserved",
-  //       buyer: account,
-  //     });
-  //     alert("Escrow Success");
-  //     window.location.reload();
-  //   } catch (error) {
-  //     console.log("error", error);
-  //   }
-  // };
+  const form = useForm<FormValues>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      recipient: "",
+      amount: undefined,
+    },
+  });
+
+  useEffect(() => {
+    if (product) {
+      const chain = CHAIN_LIST[product.destination as keyof typeof CHAIN_LIST];
+      setSelectedChain(chain);
+
+      form.setValue("recipient", product.owner);
+      form.setValue("amount", product.price);
+    }
+  }, [CHAIN_LIST, form, product]);
+
+  const handleFeeChainChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const chainName = event.target.value;
+    const chain = CHAIN_LIST[chainName as keyof typeof CHAIN_LIST];
+    setSelectedFeeChain(chain);
+  };
+  const handleFeeTokenChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const feeToken = event.target.value;
+    setSelectedFeeToken(feeToken);
+  };
+
+  const onSubmit = useCallback(
+    async (data: FormValues) => {
+      if (!product) {
+        return;
+      }
+      if (!klaster) {
+        return;
+      }
+
+      try {
+        const uBalance = await mcClient.getUnifiedErc20Balance({
+          tokenMapping: mUSDC,
+          account: klaster.account,
+        });
+
+        const destinationChain = selectedChain as Chain;
+        const feeChain = selectedFeeChain as Chain;
+        const feeToken = selectedFeeToken as PaymentTokenSymbol;
+        const bridgingOps = await encodeBridgingOps({
+          tokenMapping: mUSDC,
+          account: klaster.account,
+          amount: parseUnits(data.amount, uBalance.decimals),
+          bridgePlugin: acrossBridgePlugin,
+          client: mcClient,
+          destinationChainId: destinationChain.CHAIN_ID,
+          unifiedBalance: uBalance,
+        });
+
+        const sendERC20Op = rawTx({
+          gasLimit: BigInt(100000),
+          to: destinationChain.USDC_ADDRESS as Address,
+          data: encodeFunctionData({
+            abi: erc20Abi,
+            functionName: "transfer",
+            args: [
+              data.recipient as Address,
+              bridgingOps.totalReceivedOnDestination,
+            ],
+          }),
+        });
+
+        const iTx = buildItx({
+          steps: bridgingOps.steps.concat(
+            singleTx(destinationChain.CHAIN_ID, sendERC20Op)
+          ),
+          feeTx: klaster.encodePaymentFee(feeChain.CHAIN_ID, feeToken),
+        });
+        const quote = await klaster.getQuote(iTx);
+        const signed = await primaryWallet.getWalletClient().signMessage({
+          message: {
+            raw: quote.itxHash,
+          },
+          account: account as Address,
+        });
+
+        const result = await klaster.execute(quote, signed);
+        console.log(result.itxHash);
+
+        await pb.collection("xchainshop").update(product.id, {
+          state: "Reserved",
+          buyer: account,
+          tx: result.itxHash,
+        });
+        window.location.reload();
+      } catch (err: any) {
+        toast("Tx Error", {
+          description: err.message,
+        });
+      }
+    },
+    [
+      account,
+      klaster,
+      mUSDC,
+      mcClient,
+      primaryWallet,
+      product,
+      selectedChain,
+      selectedFeeChain,
+      selectedFeeToken,
+    ]
+  );
 
   return (
     <Wrapper>
@@ -209,14 +317,82 @@ export default function Home() {
           <h1>{product.description}</h1>
 
           <div className="space-y-5">
-            <h1>Price : {product.price} USDC</h1>
-            <h1>Available : {balance} USDC</h1>
-
-            {product?.state == "Sell" && product?.owner !== account && (
-              <div className="flex space-x-4">
-                <Button onClick={onSendTransaction}>Buy</Button>
+            <div>
+              <div>Your Information</div>
+              <div className="ml-3">
+                {klasterAddress &&
+                  uniq(klasterAddress).map((address, index) => {
+                    return <div key={index}>AA Address: {address}</div>;
+                  })}
+                {chainBalances &&
+                  chainBalances.map((chainBalance, index) => {
+                    return (
+                      <div key={index}>
+                        {chainBalance.chain}: {chainBalance.balance} USDC
+                      </div>
+                    );
+                  })}
+                <div>Total USDC : {totalUSDC} USDC</div>
               </div>
-            )}
+            </div>
+
+            <div>
+              <div>Seller Information</div>
+              <div className="ml-3">
+                <div>Seller : {product.owner}</div>
+                <div>Destination : {product.destination}</div>
+                <div>Price : {product.price} USDC</div>
+              </div>
+            </div>
+
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="w-full space-y-8"
+              >
+                <div className="space-y-3">
+                  <FormItem>
+                    <FormLabel>Select Fee Chain</FormLabel>
+                    <FormControl>
+                      <select
+                        onChange={handleFeeChainChange}
+                        disabled={loading}
+                      >
+                        <option value="">Select a chain</option>
+                        {Object.keys(CHAIN_LIST).map((chainName) => (
+                          <option key={chainName} value={chainName}>
+                            {CHAIN_LIST[chainName].NAME}
+                          </option>
+                        ))}
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                  <FormItem>
+                    <FormLabel>Select Fee Token</FormLabel>
+                    <FormControl>
+                      <select
+                        onChange={handleFeeTokenChange}
+                        disabled={loading}
+                      >
+                        <option value="">Select a token</option>
+                        {Object.keys(FEE_TOKEN).map((token) => (
+                          <option key={token} value={token}>
+                            {FEE_TOKEN[token]}
+                          </option>
+                        ))}
+                      </select>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                </div>
+                {product?.state == "Sell" && product?.owner !== account && (
+                  <Button disabled={loading} className="ml-auto" type="submit">
+                    Buy
+                  </Button>
+                )}
+              </form>
+            </Form>
 
             {product?.buyer === account && (
               <div className="flex items-center">
@@ -235,11 +411,11 @@ export default function Home() {
               </div>
             )}
 
-            {product?.state === "Sell" && product?.owner === account && (
+            {/* {product?.state === "Sell" && product?.owner === account && (
               <div className="flex space-x-4">
                 <Button onClick={onSendTransaction}>Delete</Button>
               </div>
-            )}
+            )} */}
             {product?.state === "Reserved" && product?.owner === account && (
               <div className="flex space-x-4">
                 <Button onClick={onApprove}>Approve</Button>
