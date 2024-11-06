@@ -1,14 +1,10 @@
-<p align="center">
-  <img src="https://github.com/user-attachments/assets/9b730ad1-08e7-40ef-ac9a-90fa2c95e1e5">
-</p>
-
 # Xchain shop
 
 Xchain shop offers simplicity and convenience for both users and store managers.
 
-#### [xchainshop.shop](https://xchainshop.shop/) | [xchainshop Deck](https://drive.google.com/file/d/1sJvtGBTozOvj9O8paR9k-O1Jycn--xL_/view?usp=sharing)
+### [xchainshop.shop](https://xchainshop.shop/) | [xchainshop Deck](https://drive.google.com/file/d/1sJvtGBTozOvj9O8paR9k-O1Jycn--xL_/view?usp=sharing)
 
-# 🤔 Background
+# Background
 Xchain shop is a second-hand transaction service that is not widely used in overseas environments and is not yet active, but it would be good to utilize this in reverse to enter this blue ocean-like second-hand transaction P2P transaction platform for the first time and participate in a market where there is a lack of competitors, effectively and uniquely show our own service, and activate this P2P transaction a little more, and provide a way for users to easily make profits and resell various leftover products that are too good to throw away or new but unused products to make a little profit, or to quickly obtain necessary items from people and areas around them.
 
 Therefore, rather than focusing on fundamental issues, we have seen a successful case in the Korean market where a GPS-based second-hand transaction service called Carrot Market was successful and well-operated, so this second-hand transaction service is being provided to introduce a cryptocurrency payment system in overseas markets, to be reborn, to challenge the overseas second-hand transaction market, and to help users easily purchase and obtain necessary products around them.
@@ -18,31 +14,50 @@ Therefore, rather than focusing on fundamental issues, we have seen a successful
 
 The payment method is cryptocurrency, and stable coins can be used for payment. In addition, since it provides multi-chain, it allows payments to be made regardless of the network.
 
-# ✨ Overview
-Everything from start to finish is designed to be easy, simple, and convenient, making it the ideal order and payment service.
-<br></br>
-> **Simple and Easy Store Management**
-  - Create Store & Manage Menu > Monitor Orders and Payments
-<br></br>
-![xchainshop-Deck_04](https://github.com/user-attachments/assets/713cf02a-83f8-4b84-b60f-358003b9cd50)
+# Problem
+- **Limited Existing Platforms**: Overseas second-hand services are scarce, and those available often lack support for diverse payment methods, limiting accessibility for many users.
 
-> **Simple and Easy Ordering**
-  - Scan QR Code > Select Menu > Select Payments > Tip & Pay
-<br></br>
-![xchainshop-Deck_05#final](https://github.com/user-attachments/assets/9ce744ae-4b40-42a5-a589-9ed1276a195f)
+- **Absence of Localized, Low-Cost Payment Options**: Conventional local payment methods, such as cash or credit card, often incur high fees around 10%. Xchain Shop addresses this by introducing cryptocurrency payments, allowing users to enjoy significantly lower transaction fees, approximately 2-3%.
+
+- **Transaction Security Issues**: Many users are hesitant to engage in second-hand transactions due to potential scams. Xchain Shop plans to incorporate safety mechanisms, such as escrow, to provide a secure transaction environment.
+
+- **Lack of User Convenience**: The platform is designed with a streamlined UX, making it easy for anyone to list, browse, and purchase items, ensuring a smooth and intuitive transaction process.
+
+# Solution
+
+1. **Cryptocurrency Payment Integration**: Xchain Shop supports cryptocurrency payments, including stablecoins like USDC, which allows users to benefit from significantly lower transaction fees (around 2-3%) compared to traditional methods. This enables users to transact across different networks with ease.
+
+2. **Localized and Low-Cost Transactions**: Traditional local payment methods often incur high fees (up to 10%), but Xchain Shop's cryptocurrency payment system addresses this with lower-cost options, making transactions more affordable.
+
+3. **Enhanced Security with Escrow**: To address the risk of scams, Xchain Shop plans to implement an escrow feature, holding payments until both parties confirm transaction completion. This creates a safer environment for second-hand transactions.
+
+4. **Seamless User Accessibility with Particle Connect SDK**: Xchain Shop leverages Particle Connect SDK, allowing users to easily sign up and log in using familiar methods such as email or social media accounts. This lowers barriers to entry, making the platform more accessible to a wider audience.
+
+5. **Cross-Chain Payment Support with Klaster**: By integrating Klaster, Xchain Shop provides cross-chain capabilities across multiple EVM-compatible networks, allowing users to conduct cryptocurrency payments on a range of networks, enhancing flexibility and accessibility.
+
+6. **Extended Network Compatibility with Agoric**: Xchain Shop also integrates Agoric to support transactions in the Cosmos IBC ecosystem as well as the EVM ecosystem, enabling users to pay with USDC on any network. This expands the platform’s reach, allowing seamless second-hand transactions across diverse blockchain ecosystems.
+
+These solutions position Xchain Shop as a user-friendly, secure, and versatile P2P platform for second-hand transactions, making it accessible and convenient in the global market.
 
 # 🔑 Key Features
-**Social login, Swap and On-Ramp using Particle Connect**
-  - Using `Particle Netowrk Connect`, we provide easy and convenient social logins for various Google, Twitter, Facebook, etc. and allow anyone to easily swap cryptocurrencies on their mobile devices and swap or purchase cash and cryptocurrencies.
 
-**Various Network Payments**
-  - By utilizing `klaster` to support various multi-chains rather than limited networks, cross-chain is supported for the entire network in the `EVM ecosystem`, allowing anyone to conveniently trade regardless of network.
+1. **Cryptocurrency Payment System**  
+   - Supports stablecoins and multiple blockchains, enabling users to make secure and affordable transactions with fees as low as 2-3%.
 
-**All-in-one service**
-  - Store managers can create their own stores, create menus, and easily manage various orders and money.
-  - Everything is done via mobile, and payments can also be easily received and confirmed by admin.
+2. **Cross-Chain Compatibility**  
+   - Utilizes **Klaster** for EVM-compatible networks and **Agoric** for Cosmos IBC networks, allowing seamless transactions with USDC across different ecosystems.
 
-# ⚙️ Process
+3. **User-Friendly Access**  
+   - With **Particle Connect SDK**, users can easily sign up using email or social media, making the platform accessible and straightforward.
+
+4. **Enhanced Security with Escrow**  
+   - Escrow services ensure secure transactions, protecting users against scams in P2P second-hand trades.
+
+5. **Intuitive UX for Quick Transactions**  
+   - Simple listing and purchasing processes with an easy-to-navigate interface, allowing users to quickly post items and make purchases.
+
+6. **GPS-Based Local Trading**  
+   - Facilitates location-based transactions so users can find and purchase items within their local community, promoting trust and convenience.
 
 <details>
 <summary>
