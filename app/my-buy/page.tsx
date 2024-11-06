@@ -1,19 +1,45 @@
 "use client";
 
+import { ProductCard } from "@/components/ProductCard";
+import { SkeletonCards } from "@/components/skeleton-cards";
 import { Wrapper } from "@/components/wrapper";
 import useProducts from "@/hooks/useProducts";
 import { IProductProps } from "@/types/product";
+import { CHAIN_LIST } from "@/utils/chain";
 import { useAccount } from "@particle-network/connectkit";
-import { useRouter } from "next/navigation";
+import {
+  Address,
+  initKlaster,
+  klasterNodeHost,
+  loadBicoV2Account,
+} from "klaster-sdk";
+import { uniq } from "ramda";
 import { useEffect, useState } from "react";
-import { ProductCard } from "@/components/ProductCard";
-import { SkeletonCards } from "@/components/skeleton-cards";
 
 export default function Home() {
-  const router = useRouter();
   const { address } = useAccount();
   const [myProducts, setMyProducts] = useState<IProductProps[]>();
+  const [klasterAddress, setKlasterAddress] = useState<any[] | null>(null);
   const { data: products } = useProducts();
+
+  useEffect(() => {
+    const init = async () => {
+      const klasterInit = await initKlaster({
+        accountInitData: loadBicoV2Account({
+          owner: address as Address,
+        }),
+        nodeUrl: klasterNodeHost.default,
+      });
+
+      const klasterAddress = klasterInit.account.getAddresses(
+        Object.values(CHAIN_LIST).map((chain) => chain.CHAIN_ID)
+      );
+
+      setKlasterAddress(klasterAddress);
+    };
+
+    init();
+  }, [address]);
 
   useEffect(() => {
     if (address && products) {
@@ -24,6 +50,12 @@ export default function Home() {
   return (
     <Wrapper>
       <div className="flex flex-wrap gap-10 w-3/5">
+        <div>
+          {klasterAddress &&
+            uniq(klasterAddress).map((address, index) => {
+              return <div key={index}>AA Address: {address}</div>;
+            })}
+        </div>
         {myProducts ? (
           myProducts.map((product) => (
             <ProductCard

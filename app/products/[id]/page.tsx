@@ -14,6 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Wrapper } from "@/components/wrapper";
 import useProduct from "@/hooks/useProduct";
 import { acrossBridgePlugin } from "@/plugin/acrossBridgePlugin";
+import { CHAIN_LIST } from "@/utils/chain";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAccount, useWallets } from "@particle-network/connectkit";
 import {
@@ -35,7 +36,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { uniq } from "ramda";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import {
@@ -47,7 +48,6 @@ import {
   parseUnits,
   type Address,
 } from "viem";
-import { baseSepolia, sepolia } from "viem/chains";
 import * as z from "zod";
 
 export default function Home() {
@@ -84,31 +84,6 @@ export default function Home() {
     RPC_URL: string;
   };
 
-  const CHAIN_LIST = useMemo(() => {
-    const SEPOLIA = {
-      NAME: "SEPOLIA",
-      CHAIN: sepolia,
-      CHAIN_ID: sepolia.id,
-      USDC_ADDRESS: "0x1c7D4B196Cb0C7B01d743Fbc6116a902379C7238" as Address,
-      RPC_URL:
-        "https://eth-sepolia.g.alchemy.com/v2/MVuRquu4XE6nUM1OQLUSNhiGltrtBprf",
-    };
-
-    const BASE_SEPOLIA = {
-      NAME: "BASE_SEPOLIA",
-      CHAIN: baseSepolia,
-      CHAIN_ID: baseSepolia.id,
-      USDC_ADDRESS: "0x036CbD53842c5426634e7929541eC2318f3dCF7e" as Address,
-      RPC_URL:
-        "https://base-sepolia.g.alchemy.com/v2/MVuRquu4XE6nUM1OQLUSNhiGltrtBprf",
-    };
-
-    return {
-      SEPOLIA,
-      BASE_SEPOLIA,
-    };
-  }, []);
-
   const FEE_TOKEN: { [key: string]: string } = {
     ETH: "ETH",
     USDC: "USDC",
@@ -131,7 +106,7 @@ export default function Home() {
       );
       return chain ? chain.NAME : undefined;
     },
-    [CHAIN_LIST]
+    []
   );
 
   useEffect(() => {
@@ -188,7 +163,7 @@ export default function Home() {
     };
 
     init();
-  }, [CHAIN_LIST, account, getChainNameById]);
+  }, [account, getChainNameById]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -206,7 +181,7 @@ export default function Home() {
       form.setValue("recipient", product.owner);
       form.setValue("amount", product.price);
     }
-  }, [CHAIN_LIST, form, product]);
+  }, [form, product]);
 
   const handleFeeChainChange = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -278,7 +253,6 @@ export default function Home() {
         });
 
         const result = await klaster.execute(quote, signed);
-        console.log(result.itxHash);
 
         await pb.collection("xchainshop").update(product.id, {
           state: "Reserved",
@@ -411,21 +385,11 @@ export default function Home() {
               </div>
             )}
 
-            {/* {product?.state === "Sell" && product?.owner === account && (
-              <div className="flex space-x-4">
-                <Button onClick={onSendTransaction}>Delete</Button>
-              </div>
-            )} */}
             {product?.state === "Reserved" && product?.owner === account && (
               <div className="flex space-x-4">
                 <Button onClick={onApprove}>Approve</Button>
               </div>
             )}
-            {/* {product?.state === "Approve" && product?.owner === account && (
-                <div className="flex space-x-4">
-                  <Button onClick={onReceive}>Receive</Button>
-                </div>
-            )} */}
           </div>
         </div>
       ) : (
