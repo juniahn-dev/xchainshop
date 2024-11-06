@@ -1,4 +1,4 @@
-# [Xchain shop](https://xchainshop.shop/)
+# [Xchain shop](https://xchainshop.vercel.app/)
 
 The Simple | Low | Re-Cycle Envirorment.
 
