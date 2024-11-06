@@ -1,8 +1,12 @@
-# Xchain shop
+# [Xchain shop](https://xchainshop.shop/)
 
-Xchain shop offers simplicity and convenience for both users and store managers.
+The Simple | Low | Re-Cycle Envirorment.
 
-### [xchainshop.shop](https://xchainshop.shop/) | [xchainshop Deck](https://drive.google.com/file/d/1sJvtGBTozOvj9O8paR9k-O1Jycn--xL_/view?usp=sharing) | [Particle Connect]() | [Klaster Contract]() | [Agoric Contract]()
+Xchain Shop is Re-Commerce Platform.
+- [xchainshop Deck](https://drive.google.com/file/d/1sJvtGBTozOvj9O8paR9k-O1Jycn--xL_/view?usp=sharing)
+
+### Smart Contract
+- [Particle Connect]() | [Klaster Contract]() | [Agoric Contract]()
 
 # Background
 Xchain shop is a second-hand transaction service that is not widely used in overseas environments and is not yet active, but it would be good to utilize this in reverse to enter this blue ocean-like second-hand transaction P2P transaction platform for the first time and participate in a market where there is a lack of competitors, effectively and uniquely show our own service, and activate this P2P transaction a little more, and provide a way for users to easily make profits and resell various leftover products that are too good to throw away or new but unused products to make a little profit, or to quickly obtain necessary items from people and areas around them.
