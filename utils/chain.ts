@@ -5,7 +5,7 @@ export type Chain = {
   NAME: string;
   CHAIN: any;
   CHAIN_ID: number;
-  USDC_ADDRESS: string;
+  USDC_ADDRESS: Address;
   RPC_URL: string;
 };
 
