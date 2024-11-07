@@ -1,4 +1,4 @@
-import { Home, ScanLine,User } from "lucide-react";
+import { Home, ScanLine, User } from "lucide-react";
 
 import {
   Sidebar,
@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/sidebar";
 import { ConnectButton } from "@particle-network/connectkit";
 import { ModeToggle } from "./moon-toggle";
+import Wallet from "./wallets";
 
 const items = [
   {
@@ -61,6 +62,7 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
       <SidebarFooter>
+        <Wallet />
         <ConnectButton />
       </SidebarFooter>
     </Sidebar>

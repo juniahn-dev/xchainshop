@@ -158,7 +158,7 @@ export default function Home() {
       setKlasterAddress(klasterAddress);
       setKlaster(klasterInit);
       setMUSDC(mcUSDC);
-      setMcClient(mcClient);  
+      setMcClient(mcClient);
       setLoading(false);
     };
 
@@ -313,91 +313,79 @@ export default function Home() {
               {product.description}
             </h1>
             <span className="border-b border-gray-400 h-px w-full"></span>
-            <div className="flex justify-evenly gap-2">
-              <div className="flex flex-col gap-1">
-                <h1 className="font-bold text-black dark:text-white text-lg">
-                  Price
-                </h1>
-                <p className="text-black dark:text-white">
-                  {product.price} USDC
-                </p>
-              </div>
-              <span className="border-l border-gray-400 w-px h-full "></span>
-              <div className="flex flex-col gap-1">
-                <h1 className="font-bold text-black dark:text-white text-lg">
-                  Current Balance
-                </h1>
-                <p className="text-black dark:text-white">{totalUSDC} USDC</p>
-              </div>
-              <span className="border-l border-gray-400 w-px h-full"></span>
-              <div className="flex flex-col gap-1">
-                <h1 className="font-bold text-black dark:text-white text-lg">
-                  Destination
-                </h1>
-                <p className="text-black dark:text-white">
-                  {product.destination}
-                </p>
-              </div>
+            <h1 className="text-bold text-2xl text-black dark:text-white">
+              Price
+            </h1>
+            <h1 className="text-black dark:text-white">
+              {product.price} USDC ({product.destination}]
+            </h1>
+            <p className="text-black dark:text-white">Oracle Price :</p>
+            <span className="border-b border-gray-400 h-px w-full"></span>
+            <div className="flex flex-col gap-1">
+              <h1 className="font-bold text-black dark:text-white text-lg">
+                Current Balance
+              </h1>
+              <p className="text-black dark:text-white">{totalUSDC} USDC</p>
             </div>
-            <div className="space-y-5">
-              <Form {...form}>
-                <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="w-full space-y-8"
-                >
-                  <div className="space-y-3 flex flex-col gap-3 py-2">
-                    <FormItem className="flex gap-3 items-center">
-                      <FormLabel className=" text-black dark:text-white">
-                        Select Fee Chain
-                      </FormLabel>
-                      <FormControl>
-                        <select
-                          onChange={handleFeeChainChange}
-                          disabled={loading}
-                          className="text-black dark:text-white"
-                        >
-                          <option
-                            value=""
+            {product?.state == "Sell" && product?.owner !== account && (
+              <div className="space-y-5">
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="w-full space-y-8"
+                  >
+                    <div className="space-y-3 flex flex-col gap-3 py-2">
+                      <FormItem className="flex gap-3 items-center">
+                        <FormLabel className=" text-black dark:text-white">
+                          Select Fee Chain
+                        </FormLabel>
+                        <FormControl>
+                          <select
+                            onChange={handleFeeChainChange}
+                            disabled={loading}
                             className="text-black dark:text-white"
                           >
-                            Select a chain
-                          </option>
-                          {Object.keys(CHAIN_LIST).map((chainName) => (
-                            <option key={chainName} value={chainName}>
-                              {CHAIN_LIST[chainName].NAME}
+                            <option
+                              value=""
+                              className="text-black dark:text-white"
+                            >
+                              Select a chain
                             </option>
-                          ))}
-                        </select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                    <FormItem className="flex gap-3 items-center">
-                      <FormLabel className="text-black dark:text-white">
-                        Select Fee Token
-                      </FormLabel>
-                      <FormControl>
-                        <select
-                          onChange={handleFeeTokenChange}
-                          disabled={loading}
-                          className="text-black dark:text-white"
-                        >
-                          <option
-                            value=""
+                            {Object.keys(CHAIN_LIST).map((chainName) => (
+                              <option key={chainName} value={chainName}>
+                                {CHAIN_LIST[chainName].NAME}
+                              </option>
+                            ))}
+                          </select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                      <FormItem className="flex gap-3 items-center">
+                        <FormLabel className="text-black dark:text-white">
+                          Select Fee Token
+                        </FormLabel>
+                        <FormControl>
+                          <select
+                            onChange={handleFeeTokenChange}
+                            disabled={loading}
                             className="text-black dark:text-white"
                           >
-                            Select a token
-                          </option>
-                          {Object.keys(FEE_TOKEN).map((token) => (
-                            <option key={token} value={token}>
-                              {FEE_TOKEN[token]}
+                            <option
+                              value=""
+                              className="text-black dark:text-white"
+                            >
+                              Select a token
                             </option>
-                          ))}
-                        </select>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  </div>
-                  {product?.state == "Sell" && product?.owner !== account && (
+                            {Object.keys(FEE_TOKEN).map((token) => (
+                              <option key={token} value={token}>
+                                {FEE_TOKEN[token]}
+                              </option>
+                            ))}
+                          </select>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    </div>
                     <Button
                       disabled={loading}
                       className="ml-auto bg-purple-600 text-white hover:bg-purple-700 py-2 px-4 rounded-3xl w-full py-6 text-xl font-bold"
@@ -405,10 +393,10 @@ export default function Home() {
                     >
                       Buy
                     </Button>
-                  )}
-                </form>
-              </Form>
-            </div>
+                  </form>
+                </Form>
+              </div>
+            )}
 
             {/* <div>
               <div>Your Information</div>

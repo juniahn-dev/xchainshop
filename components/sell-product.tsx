@@ -193,7 +193,7 @@ export const SellProduct: React.FC = () => {
               render={({ field }) => (
                 <FormItem className="text-black dark:text-white">
                   <FormLabel className="text-black dark:text-white">
-                    Receive Chain
+                    Receive Chain(Klaster)
                   </FormLabel>
                   <FormControl>
                     <Select
@@ -216,6 +216,50 @@ export const SellProduct: React.FC = () => {
                             className="text-black dark:text-white"
                           >
                             BASE_SEPOLIA
+                          </SelectItem>
+                        </SelectGroup>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="destination"
+              render={({ field }) => (
+                <FormItem className="text-black dark:text-white">
+                  <FormLabel className="text-black dark:text-white">
+                    Receive Chain(Cosmos)
+                  </FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      value={field.value || ""}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Select a destination" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectGroup>
+                          <SelectItem
+                            value="OSMOSIS"
+                            className="text-black dark:text-white"
+                          >
+                            Osmosis
+                          </SelectItem>
+                          <SelectItem
+                            value="AGORIC"
+                            className="text-black dark:text-white"
+                          >
+                            Agoric
+                          </SelectItem>
+                          <SelectItem
+                            value="COSMOS"
+                            className="text-black dark:text-white"
+                          >
+                            Cosmos
                           </SelectItem>
                         </SelectGroup>
                       </SelectContent>
