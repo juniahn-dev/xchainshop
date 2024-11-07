@@ -9,8 +9,12 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@agoric/orchestration": "^0.2.0-u18.0",
+    "@agoric/react-components": "^0.2.0",
     "@cosmos-kit/keplr": "^2.14.1",
     "@cosmos-kit/react": "^2.20.1",
+    "@endo/errors": "^1.2.7",
+    "@endo/patterns": "^1.4.6",
     "@hookform/resolvers": "^3.9.0",
     "@interchain-ui/react": "^1.26.1",
     "@particle-network/connectkit": "^2.0.9",

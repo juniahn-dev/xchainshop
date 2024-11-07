@@ -15,6 +15,7 @@ import { Wrapper } from "@/components/wrapper";
 import useProduct from "@/hooks/useProduct";
 import { acrossBridgePlugin } from "@/plugin/acrossBridgePlugin";
 import { CHAIN_LIST } from "@/utils/chain";
+import { useChain } from "@cosmos-kit/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAccount, useWallets } from "@particle-network/connectkit";
 import {
@@ -63,6 +64,9 @@ export default function Home() {
   const [selectedFeeChain, setSelectedFeeChain] = useState<Chain | null>(null);
   const [selectedFeeToken, setSelectedFeeToken] = useState<string | null>(null);
 
+  // const { walletConnection, chainName: agoricChainName } = useAgoric();
+  const { address: agoricAddress, getSigningStargateClient } =
+    useChain("agoric");
   const [primaryWallet] = useWallets();
   const params = useParams();
   const { id } = params as { id: string };
@@ -279,6 +283,18 @@ export default function Home() {
     ]
   );
 
+  const onSubmitCosmos = useCallback(
+    async (data: FormValues) => {
+      if (!product) {
+        return;
+      }
+
+      alert("not yet implemented");
+      return;
+    },
+    [agoricAddress, product]
+  );
+
   return (
     <Wrapper>
       {product ? (
@@ -327,76 +343,98 @@ export default function Home() {
               </h1>
               <p className="text-black dark:text-white">{totalUSDC} USDC</p>
             </div>
-            {product?.state == "Sell" && product?.owner !== account && (
-              <div className="space-y-5">
-                <Form {...form}>
-                  <form
-                    onSubmit={form.handleSubmit(onSubmit)}
-                    className="w-full space-y-8"
-                  >
-                    <div className="space-y-3 flex flex-col gap-3 py-2">
-                      <FormItem className="flex gap-3 items-center">
-                        <FormLabel className=" text-black dark:text-white">
-                          Select Fee Chain
-                        </FormLabel>
-                        <FormControl>
-                          <select
-                            onChange={handleFeeChainChange}
-                            disabled={loading}
-                            className="text-black dark:text-white"
-                          >
-                            <option
-                              value=""
-                              className="text-black dark:text-white"
-                            >
-                              Select a chain
-                            </option>
-                            {Object.keys(CHAIN_LIST).map((chainName) => (
-                              <option key={chainName} value={chainName}>
-                                {CHAIN_LIST[chainName].NAME}
-                              </option>
-                            ))}
-                          </select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                      <FormItem className="flex gap-3 items-center">
-                        <FormLabel className="text-black dark:text-white">
-                          Select Fee Token
-                        </FormLabel>
-                        <FormControl>
-                          <select
-                            onChange={handleFeeTokenChange}
-                            disabled={loading}
-                            className="text-black dark:text-white"
-                          >
-                            <option
-                              value=""
-                              className="text-black dark:text-white"
-                            >
-                              Select a token
-                            </option>
-                            {Object.keys(FEE_TOKEN).map((token) => (
-                              <option key={token} value={token}>
-                                {FEE_TOKEN[token]}
-                              </option>
-                            ))}
-                          </select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    </div>
-                    <Button
-                      disabled={loading}
-                      className="ml-auto bg-purple-600 text-white hover:bg-purple-700 py-2 px-4 rounded-3xl w-full py-6 text-xl font-bold"
-                      type="submit"
+            {product?.state == "Sell" &&
+              product.destination.includes("SEPOLIA") &&
+              product?.owner !== account && (
+                <div className="space-y-5">
+                  <Form {...form}>
+                    <form
+                      onSubmit={form.handleSubmit(onSubmit)}
+                      className="w-full space-y-8"
                     >
-                      Buy
-                    </Button>
-                  </form>
-                </Form>
-              </div>
-            )}
+                      <div className="space-y-3 flex flex-col gap-3 py-2">
+                        <FormItem className="flex gap-3 items-center">
+                          <FormLabel className=" text-black dark:text-white">
+                            Select Fee Chain
+                          </FormLabel>
+                          <FormControl>
+                            <select
+                              onChange={handleFeeChainChange}
+                              disabled={loading}
+                              className="text-black dark:text-white"
+                            >
+                              <option
+                                value=""
+                                className="text-black dark:text-white"
+                              >
+                                Select a chain
+                              </option>
+                              {Object.keys(CHAIN_LIST).map((chainName) => (
+                                <option key={chainName} value={chainName}>
+                                  {CHAIN_LIST[chainName].NAME}
+                                </option>
+                              ))}
+                            </select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                        <FormItem className="flex gap-3 items-center">
+                          <FormLabel className="text-black dark:text-white">
+                            Select Fee Token
+                          </FormLabel>
+                          <FormControl>
+                            <select
+                              onChange={handleFeeTokenChange}
+                              disabled={loading}
+                              className="text-black dark:text-white"
+                            >
+                              <option
+                                value=""
+                                className="text-black dark:text-white"
+                              >
+                                Select a token
+                              </option>
+                              {Object.keys(FEE_TOKEN).map((token) => (
+                                <option key={token} value={token}>
+                                  {FEE_TOKEN[token]}
+                                </option>
+                              ))}
+                            </select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      </div>
+                      <Button
+                        disabled={loading}
+                        className="ml-auto bg-purple-600 text-white hover:bg-purple-700 py-2 px-4 rounded-3xl w-full py-6 text-xl font-bold"
+                        type="submit"
+                      >
+                        Buy
+                      </Button>
+                    </form>
+                  </Form>
+                </div>
+              )}
+            {product?.state == "Sell" &&
+              product.destination.includes("SEPOLIA") === false &&
+              product?.owner !== account && (
+                <div className="space-y-5">
+                  <Form {...form}>
+                    <form
+                      onSubmit={form.handleSubmit(onSubmitCosmos)}
+                      className="w-full space-y-8"
+                    >
+                      <Button
+                        disabled
+                        className="ml-auto bg-purple-600 text-white hover:bg-purple-700 py-2 px-4 rounded-3xl w-full py-6 text-xl font-bold"
+                        type="submit"
+                      >
+                        Buy
+                      </Button>
+                    </form>
+                  </Form>
+                </div>
+              )}
 
             {/* <div>
               <div>Your Information</div>

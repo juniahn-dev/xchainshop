@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
+import { useChains } from "@cosmos-kit/react";
 const formSchema = z.object({
   name: z.string().default("").optional(),
   price: z.coerce.number().optional(),
@@ -45,6 +46,7 @@ export const SellProduct: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const action = "Create";
   const { address } = useAccount();
+  const chains = useChains(["agoric", "osmosis", "cosmoshub"]);
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
@@ -64,9 +66,20 @@ export const SellProduct: React.FC = () => {
   const onSubmit = async (data: FormValues) => {
     try {
       setLoading(true);
+      let targetAddress = address;
+      if (data.destination === "agoric") {
+        targetAddress = chains.agoric.address;
+      }
+      if (data.destination === "osmosis") {
+        targetAddress = chains.osmosis.address;
+      }
+      if (data.destination === "cosmoshub") {
+        targetAddress = chains.cosmoshub.address;
+      }
+
       const formData = {
         ...data,
-        owner: address,
+        owner: targetAddress,
       };
 
       await pb.collection("xchainshop").create(formData);
@@ -217,46 +230,20 @@ export const SellProduct: React.FC = () => {
                           >
                             BASE_SEPOLIA
                           </SelectItem>
-                        </SelectGroup>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="destination"
-              render={({ field }) => (
-                <FormItem className="text-black dark:text-white">
-                  <FormLabel className="text-black dark:text-white">
-                    Receive Chain(Cosmos)
-                  </FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value || ""}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Select a destination" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectGroup>
                           <SelectItem
-                            value="OSMOSIS"
+                            value="osmosis"
                             className="text-black dark:text-white"
                           >
                             Osmosis
                           </SelectItem>
                           <SelectItem
-                            value="AGORIC"
+                            value="agoric"
                             className="text-black dark:text-white"
                           >
                             Agoric
                           </SelectItem>
                           <SelectItem
-                            value="COSMOS"
+                            value="cosmoshub"
                             className="text-black dark:text-white"
                           >
                             Cosmos
