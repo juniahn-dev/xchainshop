@@ -14,10 +14,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Wrapper } from "@/components/wrapper";
 import useProduct from "@/hooks/useProduct";
 import { acrossBridgePlugin } from "@/plugin/acrossBridgePlugin";
+import sedaAbi from "@/seda-abi.json";
 import { CHAIN_LIST } from "@/utils/chain";
 import { useChain } from "@cosmos-kit/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAccount, useWallets } from "@particle-network/connectkit";
+import { ethers, JsonRpcProvider } from "ethers";
 import {
   BiconomyV2AccountInitData,
   buildItx,
@@ -36,7 +38,6 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { uniq } from "ramda";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -63,6 +64,7 @@ export default function Home() {
   const [selectedChain, setSelectedChain] = useState<Chain | null>(null);
   const [selectedFeeChain, setSelectedFeeChain] = useState<Chain | null>(null);
   const [selectedFeeToken, setSelectedFeeToken] = useState<string | null>(null);
+  const [oraclePrice, setOraclePrice] = useState(0);
 
   // const { walletConnection, chainName: agoricChainName } = useAgoric();
   const { address: agoricAddress, getSigningStargateClient } =
@@ -295,6 +297,30 @@ export default function Home() {
     [agoricAddress, product]
   );
 
+  useEffect(() => {
+    const init = async () => {
+      try {
+        const provider = new JsonRpcProvider(
+          "https://base-sepolia.g.alchemy.com/v2/MVuRquu4XE6nUM1OQLUSNhiGltrtBprf"
+        );
+
+        const contract = new ethers.Contract(
+          "0xE7B0F894cEbCF283E591F94FEBB8f4c5c02fB229",
+          sedaAbi,
+          provider
+        );
+
+        const answer = await contract.latestAnswer();
+        const amount = answer.toString().split(" ");
+        setOraclePrice(amount[0] / 1000000);
+      } catch (error) {
+        console.error("error:", error);
+      }
+    };
+
+    init();
+  }, []);
+
   return (
     <Wrapper>
       {product ? (
@@ -335,7 +361,9 @@ export default function Home() {
             <h1 className="text-black dark:text-white">
               {product.price} USDC ({product.destination}]
             </h1>
-            <p className="text-black dark:text-white">Oracle Price :</p>
+            <p className="text-black dark:text-white">
+              Oracle Price : {oraclePrice} USDC
+            </p>
             <span className="border-b border-gray-400 h-px w-full"></span>
             <div className="flex flex-col gap-1">
               <h1 className="font-bold text-black dark:text-white text-lg">

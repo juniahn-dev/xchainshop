@@ -10,24 +10,24 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { useChains } from "@cosmos-kit/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAccount } from "@particle-network/connectkit";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useChains } from "@cosmos-kit/react";
+
 const formSchema = z.object({
   name: z.string().default("").optional(),
   price: z.coerce.number().optional(),
