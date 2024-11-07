@@ -42,24 +42,24 @@ export default function Home() {
   return (
     <Wrapper>
       <div className="container mx-auto p-6">
-        <h1 className="text-2xl font-bold mb-4 font-mono">XChainshop</h1>
+        <h1 className="text-2xl font-bold mb-4 ">XChainshop</h1>
         <Tabs defaultValue="All" className="mb-8">
           <TabsList className="flex justify-start space-x-4 mb-4 bg-transparent">
             <TabsTrigger
               value="All"
-              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg text-md font-mono data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
+              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg text-md  data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
             >
               All
             </TabsTrigger>
             <TabsTrigger
               value="Sell"
-              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg text-md font-mono data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
+              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg text-md  data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
             >
               For Sale
             </TabsTrigger>
             <TabsTrigger
               value="Reserved"
-              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg text-md font-mono data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
+              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg text-md  data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
             >
               Reserved
             </TabsTrigger>

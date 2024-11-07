@@ -282,7 +282,7 @@ export default function Home() {
   return (
     <Wrapper>
       {product ? (
-        <div className="z-10 w-full font-mono text-black space-y-5 flex gap-3">
+        <div className="z-10 w-full  text-black space-y-5 flex gap-3">
           <div>
             <Image src={product.image} width={500} height={500} alt={""} />
           </div>
@@ -293,7 +293,7 @@ export default function Home() {
                 product.state === "Sell"
                   ? "bg-green-200 text-green-900"
                   : "bg-gray-200 text-gray-600"
-              } font-medium font-mono border-none rounded-xl px-2 py-1 w-[90px]`}
+              } font-medium  border-none rounded-xl px-2 py-1 w-[90px]`}
             >
               <span
                 className={`w-2 h-2 rounded-full mr-2 ${

@@ -4,7 +4,8 @@ import { Wrapper } from "@/components/wrapper";
 export default function Home() {
   return (
     <Wrapper>
-      <div className="z-10 w-full max-w-md font-mono mt-10 text-white">
+      <div className="container mx-auto p-6">
+        <h1 className="text-2xl font-bold mb-4 ">Sell Product</h1>
         <SellProduct />
       </div>
     </Wrapper>

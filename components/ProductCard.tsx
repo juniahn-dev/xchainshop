@@ -28,7 +28,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
   const router = useRouter();
 
   return (
-    <Card className="shadow-lg hover:shadow-xl rounded-xl overflow-hidden w-[350px] font-mono flex flex-col justify-around">
+    <Card className="shadow-lg hover:shadow-xl rounded-xl overflow-hidden w-[350px]  flex flex-col justify-around">
       <CardContent className="p-0">
         <div className="relative w-full aspect-[4/3]">
           <Image
@@ -48,7 +48,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({
               state === "Sell"
                 ? "bg-green-200 text-green-900"
                 : "bg-gray-200 text-gray-600"
-            } font-medium font-mono border-none rounded-xl px-2 py-1 w-[90px]`}
+            } font-medium  border-none rounded-xl px-2 py-1 w-[90px]`}
           >
             <span
               className={`w-2 h-2 rounded-full mr-2 ${

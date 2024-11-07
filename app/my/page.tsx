@@ -8,7 +8,7 @@ import { useAccount } from "@particle-network/connectkit";
 import { useRouter } from "next/navigation";
 import { ProductCard } from "@/components/ProductCard";
 import { Barcode, HandHelping } from "lucide-react";
-import { uniq } from "ramda";
+import { add, uniq } from "ramda";
 import { Address, createWalletClient, custom, formatUnits } from "viem";
 import { CHAIN_LIST, Chain } from "@/utils/chain";
 import {
@@ -29,6 +29,7 @@ export default function Home() {
   const [klasterAddress, setKlasterAddress] = useState<any[] | null>(null);
   const [totalUSDC, setTotalUSDC] = useState<string | null>(null);
   const [chainBalances, setChainBalances] = useState<any[] | null>(null);
+  const [balance, setBalance] = useState<bigint | null>(null);
 
   useEffect(() => {
     const init = async () => {
@@ -58,6 +59,11 @@ export default function Home() {
         tokenMapping: mcUSDC,
         account: klasterInit.account,
       });
+      const nativeBalances = await mcClient.getUnifiedNativeBalance({
+        account: klasterInit.account,
+      });
+      console.log("nativeBalances", nativeBalances);
+      setBalance(nativeBalances);
       setTotalUSDC(formatUnits(uBalance.balance, uBalance.decimals));
       setChainBalances(
         uBalance.breakdown.map((balance) => ({
@@ -117,36 +123,44 @@ export default function Home() {
   return (
     <Wrapper>
       <div className="container mx-auto p-6">
-        <h1 className="text-2xl font-bold mb-4 font-mono">My Page</h1>
+        <h1 className="text-2xl font-bold mb-4 ">My Page</h1>
         <Tabs defaultValue="My Profile" className="mb-8">
           <TabsList className="flex justify-start space-x-4 mb-4 bg-transparent">
             <TabsTrigger
               value="My Profile"
-              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg text-md font-mono data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
+              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg text-md  data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
             >
               My Profile
             </TabsTrigger>
             <TabsTrigger
               value="Sell"
-              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg text-md font-mono data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
+              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg text-md  data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
             >
               <HandHelping className="mr-2" />
               My Sell
             </TabsTrigger>
             <TabsTrigger
               value="Reserved"
-              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg text-md font-mono data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
+              className="flex items-center justify-center pb-2 px-4 border-b-2 border-transparent hover:shadow-lg text-md  data-[state=active]:bg-white data-[state=active]:text-black rounded-md"
             >
               <Barcode className="mr-2" />
               My Buy
             </TabsTrigger>
           </TabsList>
           <TabsContent value="My Profile">
-            <div className="p-4 bg-white dark:bg-gray-800 rounded-lg shadow-md w-1/2">
-              <h2 className="text-2xl font-semibold mb-6 text-gray-800 dark:text-gray-200">
-                Your Information
-              </h2>
+            <div className="p-4 rounded-lg shadow-md w-1/2">
               <div className="space-y-4 ml-3">
+                {/* <div
+                  key={0}
+                  className="flex items-center justify-between border-b border-gray-300 dark:border-gray-700 pb-2"
+                >
+                  <span className="text-gray-600 dark:text-gray-400 font-medium">
+                    EOA Address
+                  </span>
+                  <span className="text-gray-900 dark:text-gray-100 ">
+                    {address}
+                  </span>
+                </div> */}
                 {klasterAddress &&
                   uniq(klasterAddress).map((address, index) => (
                     <div
@@ -154,13 +168,24 @@ export default function Home() {
                       className="flex items-center justify-between border-b border-gray-300 dark:border-gray-700 pb-2"
                     >
                       <span className="text-gray-600 dark:text-gray-400 font-medium">
-                        Address {index + 1}
+                        Klaster AA Address #{index + 1}
                       </span>
-                      <span className="text-gray-900 dark:text-gray-100 font-mono">
+                      <span className="text-gray-900 dark:text-gray-100 ">
                         {address}
                       </span>
                     </div>
                   ))}
+                <div
+                  key={"native"}
+                  className="flex items-center justify-between border-b border-gray-300 dark:border-gray-700 pb-2"
+                >
+                  <span className="text-gray-600 dark:text-gray-400 font-medium">
+                    Balance
+                  </span>
+                  <span className="text-gray-900 dark:text-gray-100 ">
+                    {balance ? formatUnits(balance, 18) : 0} ETH
+                  </span>
+                </div>
                 {chainBalances &&
                   chainBalances.map((chainBalance, index) => (
                     <div
@@ -170,7 +195,7 @@ export default function Home() {
                       <span className="text-gray-600 dark:text-gray-400 font-medium">
                         {chainBalance.chain} Balance
                       </span>
-                      <span className="text-gray-900 dark:text-gray-100 font-mono">
+                      <span className="text-gray-900 dark:text-gray-100 ">
                         {chainBalance.balance} USDC
                       </span>
                     </div>
@@ -179,7 +204,7 @@ export default function Home() {
                   <span className="text-lg text-gray-700 dark:text-gray-300 font-semibold">
                     Total USDC
                   </span>
-                  <span className="text-lg text-gray-900 dark:text-gray-100 font-bold font-mono">
+                  <span className="text-lg text-gray-900 dark:text-gray-100 font-bold ">
                     {totalUSDC} USDC
                   </span>
                 </div>
