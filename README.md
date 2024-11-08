@@ -6,10 +6,9 @@ Xchain Shop is Re-Commerce Platform.
 - [Xchainshop Deck](https://www.canva.com/design/DAGVlSR0wkA/6xGTcVe_KUxmqTbo_LaCuA/edit?utm_content=DAGVlSR0wkA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | [Demo video](https://youtu.be/dK1H0B30Nf4)
 
 ### Smart Contract
-- [Particle Connect](https://github.com/juniahn-dev/xchainshop/blob/main/components/connectkit.tsx) | [Klaster Contract](https://github.com/juniahn-dev/xchainshop/blob/main/app/products/%5Bid%5D/page.tsx#L206) | [Agoric Contract]() | [SEDA Contract](https://github.com/soaryong/seda-request-starter-kit)
+- [Particle Connect](https://github.com/juniahn-dev/xchainshop/blob/main/components/connectkit.tsx) | [Klaster Contract](https://github.com/juniahn-dev/xchainshop/blob/main/app/products/%5Bid%5D/page.tsx#L206) | [Agoric Contract](https://github.com/juniahn-dev/xchainshop/tree/main/orchestration) | [SEDA Contract](https://github.com/soaryong/seda-request-starter-kit)
 
 # Background
-
 Xchain shop is a second-hand transaction service that is not widely used in overseas environments and is not yet active, but it would be good to utilize this in reverse to enter this blue ocean-like second-hand transaction P2P transaction platform for the first time and participate in a market where there is a lack of competitors, effectively and uniquely show our own service, and activate this P2P transaction a little more, and provide a way for users to easily make profits and resell various leftover products that are too good to throw away or new but unused products to make a little profit, or to quickly obtain necessary items from people and areas around them.
 
 Therefore, rather than focusing on fundamental issues, we have seen a successful case in the Korean market where a GPS-based second-hand transaction service called Carrot Market was successful and well-operated, so this second-hand transaction service is being provided to introduce a cryptocurrency payment system in overseas markets, to be reborn, to challenge the overseas second-hand transaction market, and to help users easily purchase and obtain necessary products around them.
@@ -20,7 +19,6 @@ Therefore, rather than focusing on fundamental issues, we have seen a successful
 The payment method is cryptocurrency, and stable coins can be used for payment. In addition, since it provides multi-chain, it allows payments to be made regardless of the network.
 
 # Problem
-
 - **Limited Existing Platforms**: Overseas second-hand services are scarce, and those available often lack support for diverse payment methods, limiting accessibility for many users.
 
 - **Absence of Localized, Low-Cost Payment Options**: Conventional local payment methods, such as cash or credit card, often incur high fees around 10%. Xchain Shop addresses this by introducing cryptocurrency payments, allowing users to enjoy significantly lower transaction fees, approximately 2-3%.
@@ -30,7 +28,6 @@ The payment method is cryptocurrency, and stable coins can be used for payment. 
 - **Lack of User Convenience**: The platform is designed with a streamlined UX, making it easy for anyone to list, browse, and purchase items, ensuring a smooth and intuitive transaction process.
 
 # Solution
-
 1. **Accurate Price Verification with SEDA Oracle**  
    - Xchain Shop leverages the SEDA oracle to provide accurate, consistent pricing for products listed on the platform. Whenever a product is registered or modified, its current price is automatically updated in the oracle. This ensures that the price displayed at the time of purchase is verified and reliable, adding transparency and trust to the transaction process.
 
@@ -51,6 +48,19 @@ The payment method is cryptocurrency, and stable coins can be used for payment. 
 
 ### Summary
 Xchain Shop combines oracle-verified pricing, cross-chain payment support, secure escrow, and an easy onboarding experience to deliver a comprehensive, community-focused platform for second-hand transactions. The solution emphasizes accessibility, security, and flexibility, enabling users to engage in local P2P transactions with ease and confidence.
+
+# How to use the Bountie Tracks
+### [SEDA](https://github.com/soaryong/seda-request-starter-kit) 
+- When transmitting product information through an external API, the current price information of the product is uploaded to the oracle to provide the same price information. Price information is periodically registered in the oracle in the backend when a product is registered or modified, and the information is used to check whether the price is accurate when purchasing a product. 
+
+### [Agoric Orchestration](https://github.com/juniahn-dev/xchainshop/tree/main/orchestration)
+- We tried to link Argoric Orchestration for Cosmos USDC payment. The linkage failed due to lack of time (library setting issue), but we tried to implement the abstraction of the Cosmos side chain. 
+
+### [Particle Connect](https://github.com/juniahn-dev/xchainshop/blob/main/components/connectkit.tsx)
+- We were able to easily link and utilize multiple wallets/social logins, etc. We were not able to test it because it is not the mainnet, but you can purchase and exchange USDC tokens used in XChainShop with Fiat On Ramp/Swap, etc. 
+
+### [Klaster](https://github.com/juniahn-dev/xchainshop/blob/main/app/products/%5Bid%5D/page.tsx#L206)
+- We used the AA wallet to easily transfer assets on multiple chains and utilize contracts on multiple chains. It made it possible to pay USDC on interchains through the optimal route.
 
 # Key Features
 
@@ -76,19 +86,6 @@ Xchain Shop combines oracle-verified pricing, cross-chain payment support, secur
 
 6. **GPS-Based Local Trading**
    - Facilitates location-based transactions so users can find and purchase items within their local community, promoting trust and convenience.
-
-# How to use the Bountie Tracks
-### [SEDA](https://github.com/soaryong/seda-request-starter-kit) 
-- When transmitting product information through an external API, the current price information of the product is uploaded to the oracle to provide the same price information. Price information is periodically registered in the oracle in the backend when a product is registered or modified, and the information is used to check whether the price is accurate when purchasing a product. 
-
-### Agoric Orchestration 
-- We tried to link Argoric Orchestration for Cosmos USDC payment. The linkage failed due to lack of time (library setting issue), but we tried to implement the abstraction of the Cosmos side chain. 
-
-### [Particle Connect](https://github.com/juniahn-dev/xchainshop/blob/main/components/connectkit.tsx)
-- We were able to easily link and utilize multiple wallets/social logins, etc. We were not able to test it because it is not the mainnet, but you can purchase and exchange USDC tokens used in XChainShop with Fiat On Ramp/Swap, etc. 
-
-### [Klaster](https://github.com/juniahn-dev/xchainshop/blob/main/app/products/%5Bid%5D/page.tsx#L206)
-- We used the AA wallet to easily transfer assets on multiple chains and utilize contracts on multiple chains. It made it possible to pay USDC on interchains through the optimal route.
 
 <details>
 <summary>
