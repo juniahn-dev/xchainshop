@@ -46,7 +46,7 @@ The payment method is cryptocurrency, and stable coins can be used for payment. 
 
 These solutions position Xchain Shop as a user-friendly, secure, and versatile P2P platform for second-hand transactions, making it accessible and convenient in the global market.
 
-# 🔑 Key Features
+# Key Features
 
 1. **Cryptocurrency Payment System**
 
@@ -70,6 +70,19 @@ These solutions position Xchain Shop as a user-friendly, secure, and versatile P
 
 6. **GPS-Based Local Trading**
    - Facilitates location-based transactions so users can find and purchase items within their local community, promoting trust and convenience.
+
+# How to use the Bountie Tracks
+### SEDA 
+- When transmitting product information through an external API, the current price information of the product is uploaded to the oracle to provide the same price information. Price information is periodically registered in the oracle in the backend when a product is registered or modified, and the information is used to check whether the price is accurate when purchasing a product. 
+
+### Agoric Orchestration 
+- We tried to link Argoric Orchestration for Cosmos USDC payment. The linkage failed due to lack of time (library setting issue), but we tried to implement the abstraction of the Cosmos side chain. 
+
+### Particle Connect 
+- We were able to easily link and utilize multiple wallets/social logins, etc. We were not able to test it because it is not the mainnet, but you can purchase and exchange USDC tokens used in XChainShop with Fiat On Ramp/Swap, etc. 
+
+### Klaster 
+- We used the AA wallet to easily transfer assets on multiple chains and utilize contracts on multiple chains. It made it possible to pay USDC on interchains through the optimal route.
 
 <details>
 <summary>
