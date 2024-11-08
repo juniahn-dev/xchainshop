@@ -19,35 +19,49 @@ Therefore, rather than focusing on fundamental issues, we have seen a successful
 The payment method is cryptocurrency, and stable coins can be used for payment. In addition, since it provides multi-chain, it allows payments to be made regardless of the network.
 
 # Problem
-- **Limited Existing Platforms**: Overseas second-hand services are scarce, and those available often lack support for diverse payment methods, limiting accessibility for many users.
+- **Limited Payment Flexibility in Overseas Second-Hand Platforms**:
+   - Traditional second-hand marketplaces are limited in payment options, often restricted to local methods like cash and credit cards. High fees (up to 10%) are common with traditional payment processors, creating a barrier for cost-sensitive users. Xchain Shop addresses this by introducing **cryptocurrency payments** with lower fees (around 2-3%) and cross-chain capabilities, making transactions more affordable and accessible.
 
-- **Absence of Localized, Low-Cost Payment Options**: Conventional local payment methods, such as cash or credit card, often incur high fees around 10%. Xchain Shop addresses this by introducing cryptocurrency payments, allowing users to enjoy significantly lower transaction fees, approximately 2-3%.
+- **Lack of Security in Peer-to-Peer Transactions**:
+   - Many users hesitate to engage in second-hand transactions due to fears of scams and lack of secure transaction systems. Xchain Shop mitigates this by incorporating **escrow services** to protect both buyers and sellers, ensuring that payment is only released when both parties are satisfied with the transaction.
 
-- **Transaction Security Issues**: Many users are hesitant to engage in second-hand transactions due to potential scams. Xchain Shop plans to incorporate safety mechanisms, such as escrow, to provide a secure transaction environment.
+- **Complex and Unfriendly User Experience**:
+   - Current platforms often have complicated registration and product listing processes, making it difficult for users to engage in quick transactions. Xchain Shop simplifies this process by providing an **intuitive, user-friendly interface** with easy onboarding through social login options, enabling anyone to quickly list or purchase items.
 
-- **Lack of User Convenience**: The platform is designed with a streamlined UX, making it easy for anyone to list, browse, and purchase items, ensuring a smooth and intuitive transaction process.
+- **Limited Access to Community-Based, Local Transactions**:
+   - Users often want to buy and sell items within their local community but face limitations in finding reliable platforms that support nearby transactions. Xchain Shop leverages **GPS-based functionality** to promote local, community-driven exchanges, fostering a safe and trusted environment for users to connect with others nearby.
+
+# Our Target
+- **Frequent Buyers and Sellers in Overseas Markets**:
+   - Travelers, expatriates, and foreign residents who need convenient ways to buy and sell items, often with fewer local connections or without access to local payment methods.
+   
+- **Young, Tech-Savvy Users**:
+  - Individuals who are comfortable with digital currencies and appreciate lower transaction fees and the flexibility that comes with cryptocurrency payments.
+
+- **Community-Oriented Shoppers**:
+   - People who prefer local, community-based marketplaces and want a safe, trusted environment to trade second-hand goods.
+
+- **Cost-Sensitive Consumers**:
+   - Users who want to avoid high transaction fees associated with traditional payment methods and value a platform offering cheaper alternatives through cryptocurrency options.
+
+Xchain Shop is designed to address these key issues by providing a secure, accessible, and community-focused platform that enables smooth, cost-effective transactions for users worldwide.
 
 # Solution
-1. **Accurate Price Verification with SEDA Oracle**  
-   - Xchain Shop leverages the SEDA oracle to provide accurate, consistent pricing for products listed on the platform. Whenever a product is registered or modified, its current price is automatically updated in the oracle. This ensures that the price displayed at the time of purchase is verified and reliable, adding transparency and trust to the transaction process.
+1. **Seamless Multi-Network Payments with Klaster**  
+   - By integrating **Klaster** for AA (Account Abstraction) wallet support, Xchain Shop enables users to transact across multiple blockchain networks effortlessly. This means users can pay with **`USDC or other supported stablecoins`** on various chains, without worrying about compatibility or network-specific barriers. It simplifies the payment process and reduces friction, providing a truly **`multi-chain payment option`** that stands out from traditional, single-network solutions.
 
-2. **Flexible Cross-Chain Payment Options with Agoric and Klaster**  
-   - Xchain Shop supports multi-chain payments, allowing users to pay with USDC across multiple blockchain ecosystems. Using **Klaster’s Account Abstraction (AA) wallet**, users can transfer assets securely on EVM-compatible networks, finding the most efficient route for cross-chain transactions. Although full integration with **Agoric Orchestration** for Cosmos was not completed, the platform is designed to enable Cosmos IBC payments in the future. This approach enhances payment flexibility and ensures compatibility with various blockchain networks, making transactions both secure and versatile.
+2. **Cross-Ecosystem Support Using Agoric for Cosmos IBC Integration**  
+   - Xchain Shop goes beyond the EVM ecosystem by incorporating **`Agoric Orchestration`** to support Cosmos’s **`IBC (Inter-Blockchain Communication) ecosystem`**. This unique integration allows us to extend USDC payments to the Cosmos network, enabling seamless P2P transactions across both EVM and Cosmos ecosystems. Users can now benefit from an interconnected network of blockchains, enjoying both flexibility and choice in payment methods. This sets Xchain Shop apart by making it compatible with a broader range of ecosystems and expanding access for users.
 
-3. **User Accessibility through Particle Connect**  
-   - **Particle Connect** integration allows users to easily access Xchain Shop using multiple wallets or social logins (e.g., email or social media accounts). This feature reduces barriers to entry and makes the platform accessible to users of all levels, with options to purchase and exchange USDC through Fiat On Ramp and token swap functionalities. This simplifies the onboarding process and enhances convenience for users engaging in second-hand transactions.
-
-4. **Secure Transaction Process with Escrow**  
-   - Xchain Shop prioritizes transaction safety by implementing escrow services for P2P exchanges. This security measure protects both buyers and sellers, addressing common concerns about scams in the second-hand market and ensuring a trustworthy environment for transactions.
-
-5. **Streamlined, Intuitive User Experience**  
-   - The platform is designed with a simple, intuitive interface that allows users to quickly list items, view available products, and make purchases. By keeping processes straightforward and user-friendly, Xchain Shop ensures that anyone can easily engage in buying or selling second-hand items.
-
-6. **Local Community-Based Trading with GPS Functionality**  
-   - Xchain Shop leverages GPS-based local trading, making it easier for users to find and purchase items within their community. This feature fosters a community-oriented marketplace and encourages trust among users by facilitating nearby exchanges.
+3. **Easy User Onboarding and Enhanced Convenience with Particle Connect**  
+   - With **`Particle Connect SDK`**, we make it easy for anyone to join Xchain Shop through **`social login options`** (e.g., email, social media accounts) and a streamlined wallet integration. This reduces the barrier to entry, allowing non-crypto-savvy users to participate in the marketplace without needing extensive setup. They can conveniently access multi-wallet functions and connect to the ecosystem, even using Fiat On Ramp for USDC purchases and swaps within the platform.
+  
+4. **Accurate and Transparent Pricing with SEDA Oracle**
+   - Ensures **`up-to-date product pricing`** by periodically registering product price information through the SEDA oracle when products are listed or updated.
+Uses SEDA to confirm pricing accuracy at the time of purchase, adding a layer of transparency. Additionally, the oracle identifies top users by ranking, awarding them directly through the contract, encouraging active engagement and rewarding trustworthy users.
 
 ### Summary
-Xchain Shop combines oracle-verified pricing, cross-chain payment support, secure escrow, and an easy onboarding experience to deliver a comprehensive, community-focused platform for second-hand transactions. The solution emphasizes accessibility, security, and flexibility, enabling users to engage in local P2P transactions with ease and confidence.
+By combining **Klaster, Agoric, Particle Connect, and SEDA Oracle**, Xchain Shop offers a cross-chain, user-friendly, and accurate marketplace experience, positioning it as a leading solution in the global P2P second-hand market.
 
 # How to use the Bountie Tracks
 ### [SEDA](https://github.com/soaryong/seda-request-starter-kit) 
@@ -64,25 +78,19 @@ Xchain Shop combines oracle-verified pricing, cross-chain payment support, secur
 - We used the AA wallet to easily transfer assets on multiple chains and utilize contracts on multiple chains. It made it possible to pay USDC on interchains through the optimal route.
 
 # Key Features
-
 1. **Cryptocurrency Payment System**
-
    - Supports stablecoins and multiple blockchains, enabling users to make secure and affordable transactions with fees as low as 2-3%.
 
 2. **Cross-Chain Compatibility**
-
    - Utilizes **Klaster** for EVM-compatible networks and **Agoric** for Cosmos IBC networks, allowing seamless transactions with USDC across different ecosystems.
 
 3. **User-Friendly Access**
-
    - With **Particle Connect SDK**, users can easily sign up using email or social media, making the platform accessible and straightforward.
 
 4. **Enhanced Security with Escrow**
-
    - Escrow services ensure secure transactions, protecting users against scams in P2P second-hand trades.
 
 5. **Intuitive UX for Quick Transactions**
-
    - Simple listing and purchasing processes with an easy-to-navigate interface, allowing users to quickly post items and make purchases.
 
 6. **GPS-Based Local Trading**
