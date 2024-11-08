@@ -9,6 +9,7 @@ Xchain Shop is Re-Commerce Platform.
 ### Smart Contract
 
    - [Particle Connect](https://github.com/juniahn-dev/xchainshop/blob/main/components/connectkit.tsx) | [Klaster Contract](https://github.com/juniahn-dev/xchainshop/blob/main/app/products/%5Bid%5D/page.tsx#L206) | [Agoric Contract]()
+
 # Background
 
 Xchain shop is a second-hand transaction service that is not widely used in overseas environments and is not yet active, but it would be good to utilize this in reverse to enter this blue ocean-like second-hand transaction P2P transaction platform for the first time and participate in a market where there is a lack of competitors, effectively and uniquely show our own service, and activate this P2P transaction a little more, and provide a way for users to easily make profits and resell various leftover products that are too good to throw away or new but unused products to make a little profit, or to quickly obtain necessary items from people and areas around them.
@@ -78,10 +79,10 @@ These solutions position Xchain Shop as a user-friendly, secure, and versatile P
 ### Agoric Orchestration 
 - We tried to link Argoric Orchestration for Cosmos USDC payment. The linkage failed due to lack of time (library setting issue), but we tried to implement the abstraction of the Cosmos side chain. 
 
-### Particle Connect 
+### [Particle Connect](https://github.com/juniahn-dev/xchainshop/blob/main/components/connectkit.tsx)
 - We were able to easily link and utilize multiple wallets/social logins, etc. We were not able to test it because it is not the mainnet, but you can purchase and exchange USDC tokens used in XChainShop with Fiat On Ramp/Swap, etc. 
 
-### Klaster 
+### [Klaster](https://github.com/juniahn-dev/xchainshop/blob/main/app/products/%5Bid%5D/page.tsx#L206)
 - We used the AA wallet to easily transfer assets on multiple chains and utilize contracts on multiple chains. It made it possible to pay USDC on interchains through the optimal route.
 
 <details>
