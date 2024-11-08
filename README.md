@@ -51,7 +51,8 @@ Xchain Shop combines oracle-verified pricing, cross-chain payment support, secur
 
 # How to use the Bountie Tracks
 ### [SEDA](https://github.com/soaryong/seda-request-starter-kit) 
-- When transmitting product information through an external API, the current price information of the product is uploaded to the oracle to provide the same price information. Price information is periodically registered in the oracle in the backend when a product is registered or modified, and the information is used to check whether the price is accurate when purchasing a product. 
+- When transmitting product information through an external API, the current price information of the product is uploaded to the oracle to provide the same price information. Price information is periodically registered in the oracle in the backend when a product is registered or modified, and the information is used to check whether the price is accurate when purchasing a product.
+- The SEDA oracle raises the address of the highest-ranking user and rewards that user in the contract.
 
 ### [Agoric Orchestration](https://github.com/juniahn-dev/xchainshop/tree/main/orchestration)
 - We tried to link Argoric Orchestration for Cosmos USDC payment. The linkage failed due to lack of time (library setting issue), but we tried to implement the abstraction of the Cosmos side chain. 
