@@ -8,7 +8,7 @@ Xchain Shop is Re-Commerce Platform.
 
 ### Smart Contract
 
-- [Particle Connect]() | [Klaster Contract]() | [Agoric Contract]()
+- [Particle Connect](https://github.com/juniahn-dev/xchainshop/blob/main/components/connectkit.tsx) | [Klaster Contract]() | [Agoric Contract]()
 
 # Background
 
