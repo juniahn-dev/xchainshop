@@ -6,7 +6,7 @@ Xchain Shop is Re-Commerce Platform.
 - [Xchainshop Deck](https://www.canva.com/design/DAGVlSR0wkA/6xGTcVe_KUxmqTbo_LaCuA/edit?utm_content=DAGVlSR0wkA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | [Demo video](https://youtu.be/dK1H0B30Nf4)
 
 ### Smart Contract
-- [Particle Connect](https://github.com/juniahn-dev/xchainshop/blob/main/components/connectkit.tsx) | [Klaster Contract](https://github.com/juniahn-dev/xchainshop/blob/main/app/products/%5Bid%5D/page.tsx#L206) | [Agoric Contract]()
+- [Particle Connect](https://github.com/juniahn-dev/xchainshop/blob/main/components/connectkit.tsx) | [Klaster Contract](https://github.com/juniahn-dev/xchainshop/blob/main/app/products/%5Bid%5D/page.tsx#L206) | [Agoric Contract]() | [SEDA Contract](https://github.com/soaryong/seda-request-starter-kit)
 
 # Background
 
@@ -78,7 +78,7 @@ Xchain Shop combines oracle-verified pricing, cross-chain payment support, secur
    - Facilitates location-based transactions so users can find and purchase items within their local community, promoting trust and convenience.
 
 # How to use the Bountie Tracks
-### SEDA 
+### [SEDA](https://github.com/soaryong/seda-request-starter-kit) 
 - When transmitting product information through an external API, the current price information of the product is uploaded to the oracle to provide the same price information. Price information is periodically registered in the oracle in the backend when a product is registered or modified, and the information is used to check whether the price is accurate when purchasing a product. 
 
 ### Agoric Orchestration 
