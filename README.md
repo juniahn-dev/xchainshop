@@ -3,7 +3,7 @@
 The Simple | Low | Re-Cycle Envirorment.
 
 Xchain Shop is Re-Commerce Platform.
-- [xchainshop Deck](https://www.canva.com/design/DAGVlSR0wkA/6xGTcVe_KUxmqTbo_LaCuA/edit?utm_content=DAGVlSR0wkA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+- [Xchainshop Deck](https://www.canva.com/design/DAGVlSR0wkA/6xGTcVe_KUxmqTbo_LaCuA/edit?utm_content=DAGVlSR0wkA&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton) | [Demo video](https://youtu.be/dK1H0B30Nf4)
 
 ### Smart Contract
 - [Particle Connect](https://github.com/juniahn-dev/xchainshop/blob/main/components/connectkit.tsx) | [Klaster Contract](https://github.com/juniahn-dev/xchainshop/blob/main/app/products/%5Bid%5D/page.tsx#L206) | [Agoric Contract]()
